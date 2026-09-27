@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "Görsel kontrolleri sonucu:\n\n1. **'EDİRNE' ve 'TAVA CİĞER':** Tam ve kesiksiz görünüyor. Her iki kelime de net, harfler eksiksiz.\n2. **Tagline:** 'İnce kesim, yağda kızartma · 160 gr porsiyon' metni tam ve düzgün.\n3. **WhatsApp şeridi:** Metin ('WhatsApp Siparişi: +90 543 486 07 22') yeşil butonun içinde tam sığıyor, taşma yok.\n4. **Fiyat rozeti:** '420 ₺' düzgün ve okunaklı.\n\n**Sonuç:** Görselde herhangi bir sorun veya eksiklik bulunmuyor; tüm elementler tam ve düzgün yerleşmiş.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1790459254,
+  "id": "20260927054728a6b3ec4fc43a4813",
+  "model": "glm-5v-turbo",
+  "object": "chat.completion",
+  "request_id": "20260927054728a6b3ec4fc43a4813",
+  "usage": {
+    "completion_tokens": 190,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 1182,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 1372
+  }
+}

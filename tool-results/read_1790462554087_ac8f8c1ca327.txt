@@ -1,0 +1,229 @@
+     1→# Worklog — Ciğerci Yusuf | Edirne Tava Ciğer
+     2→
+     3→---
+     4→Task ID: 1
+     5→Agent: Z.ai Code (main)
+     6→Task: https://edirnecigercisikartal.space-z.ai sitesinin tam kopyasını oluştur (tüm buton işlevleri dahil) ve istenen güncellemeleri uygula: Ciğer 420₺, Coca Cola şişe 60₺ / kutu 70₺, telefon +90 543 486 07 22 (tek telefon, WhatsApp dahil), Instagram https://www.instagram.com/edirnetavaciger_kartal?utm_source=qr&stkn=MWJmbDl3cGZzemRnbQ==
+     7→
+     8→Work Log:
+     9→- Orijinal site web-reader (page_reader) ile HTML+metin olarak çekildi (/tmp/site.html)
+    10→- Orijinal site agent-browser ile interaktif olarak incelendi: snapshot, tüm linkler, "Yol Tarifi" buton davranışı test edildi (Google Maps yön tarifi: https://www.google.com/maps/dir/?api=1&destination=40.8898,29.18467)
+    11→- CSS dosyaları indirilip tema renkleri çıkarıldı: cream #faefda, ink #1d140f, brand-red #c31214, orange #ef6c01, card #fefaf0, border #e3cdb1, muted #eadcc5, muted-foreground #594941
+    12→- Özel sınıflar kopyalandı: .text-brand-gradient (linear-gradient 100deg), .bg-cream-texture (radial gradient dokusu), .font-display (Anton fontu)
+    13→- Görseller indirildi: ciger-yusuf-portion.jpg, ciger-yusuf-plate.jpg, favicon-32.png, icon-192.png, icon-512.png, apple-touch-icon.png
+    14→- manifest.webmanifest kopyalandı (theme #b8412a, shortcuts Menü/Konum)
+    15→- src/lib/site-config.ts oluşturuldu: tüm sabitler (telefon, WhatsApp URL, Instagram URL, adres, haritalar, menü/fiyatlar) tek yerden yönetiliyor
+    16→- src/app/globals.css: tema renkleri + font-display/brand-gradient/cream-texture utility'leri + smooth scroll
+    17→- src/app/layout.tsx: Anton + Geist fontları, Türkçe lang="tr", metadata (title, description, OG), viewport themeColor #b8412a
+    18→- src/app/page.tsx: Header (sticky, logo, Menü/Konum nav, WhatsApp yeşil buton, Instagram ikon butonu), Hero (gradient başlık, Yol Tarifi/Menüyü Gör/Bize Yorum Yapın butonları, flame/leaf etiketleri, görsel+kart), Menü (ana ürün kartı + 6 içecek kartı), Konum (iletişim kartı, 3 buton), Footer (marka, iletişim, hızlı erişim)
+    19→- src/components/directions-button.tsx: client component — Yol Tarifi butonu window.open ile Google Maps'i yeni sekmede açar
+    20→- src/components/whatsapp-icon.tsx: orijinal WhatsApp SVG path'i
+    21→- next.config.ts: allowedDevOrigins eklendi; layout'a metadataBase eklendi
+    22→- Lint: temiz (hata yok)
+    23→- Agent Browser doğrulaması: tüm linkler, fiyatlar, çapa navigasyonu, Yol Tarifi butonu (yeni sekme Google Maps), WhatsApp butonu (api.whatsapp.com/905434860722) test edildi
+    24→- VLM ile orijinal↔kopya görsel karşılaştırması: hero, menü, konum bölümleri birebir doğrulandı
+    25→- Mobil (375x812): footer alta yapışık, yatay taşma yok, sayfa 3666px yükseklik
+    26→
+    27→Stage Summary:
+    28→- Site tamamen çalışır durumda: http://localhost:3000 (kullanıcı Önizleme Panelinden görebilir)
+    29→- Fiyat güncellemeleri UYGULANDI: Ciğer 420 ₺ (hero rozeti + menü kartı), Coca Cola şişe 60 ₺, Coca Cola kutu 70 ₺; diğer fiyatlar aynı (ayran 50, fanta 60, soda 30, su 20)
+    30→- Tek telefon numarası: +90 543 486 07 22 — tel: linki, WhatsApp (wa.me/905434860722 önceden doldurulmuş sipariş mesajıyla) ve tüm görünümlerde
+    31→- Instagram: @edirnetavaciger_kartal → yeni URL (utm_source=qr&stkn=MWJmbDl3cGZzemRnbQ==)
+    32→- Buton fonksiyonları: Yol Tarifi → Google Maps (40.8898,29.18467); Bize Yorum Yapın → Google Haritalar yorum linki (maps.app.goo.gl/5QfFZnAtEyYYdXrS7); Sipariş Ver → WhatsApp; Menü/Konum → çapa kaydırma
+    33→- Dev sunucu çalışıyor, log temiz
+    34→
+    35→Unresolved issues or risks:
+    36→- Orijinal sitede Instagram linkinde igsh parametresi vardı; kullanıcı yeni URL'de utm_source/stkn parametrelerini verdi — kullanıcı URL'si kullanıldı
+    37→- Sonraki aşamalar için öneri: küçük ek iyileştirmeler (ör. mobilde hızlı erişim menüsü, otomatik yıl, performans), gerekirse mini hizmet eklenmeden mevcut yapı korunmalı
+    38→
+    39→---
+    40→Task ID: 2
+    41→Agent: Z.ai Code (webDevReview cron - tur 1)
+    42→Task: QA testi + stil detayları iyileştirmesi + yeni özellikler ekleme (iş verileri sabit kalmalı)
+    43→
+    44→Work Log:
+    45→- worklog.md incelendi, mevcut durum anlaşıldı (site stabil, tam kopya tamam)
+    46→- QA (agent-browser, 375x812 + 1280x800): fiyatlar [420, 50, 60, 70, 60, 30, 20], telefon +90 543 486 07 22, Instagram @edirnetavaciger_kartal, adres, başlık, 2 görsel yüklendi — TÜMÜ doğru; konsol hatası yok; Yol Tarifi butonu Google Maps (40.8898,29.18467) açıyor; WhatsApp butonu wa.me/905434860722 açıyor; mobilde yatay taşma yok
+    47→- YENİ: JSON-LD Restaurant yapılandırılmış verisi (page.tsx) — name, adres (PostalAddress), geo koordinat, telefon, sameAs Instagram, hasMenu (ciğer 420₺ + 6 içecek gerçek fiyatlarıyla MenuSection/MenuItem), priceRange ₺₺ → Google zengin sonuç uyumluluğu
+    48→- YENİ: Mobil sabit hızlı işlem çubuğu (mobile-action-bar.tsx) — sadece mobilde görünür: Sipariş Ver (WhatsApp yeşil), Ara (tel: gradyan kırmızı), Yol Tarifi (mavi Google Maps); iOS safe-area (env(safe-area-inset-bottom)) desteği; alt boşluk spacer'ı footer'ı kapatmıyor
+    49→- YENİ: Yukarı çık butonu (back-to-top.tsx) — sadece masaüstünde (md+), 600px kaydırmadan sonra belirir, ink→brand-red hover
+    50→- YENİ: Scroll-spy navigasyon (nav-links.tsx) — aktif bölüm (Menü/Konum) kırmızı + gradient alt çizgiyle vurgulanır, aria-current
+    51→- YENİ: Scroll reveal animasyonları (reveal.tsx) — IntersectionObserver ile bölümler fade-up; prefers-reduced-motion kullanıcıları CSS motion-safe/motion-reduce ile anında görür
+    52→- STİL: Hero görselinde hover zoom (group-hover:scale-105) + blur halo rotasyonu; içecek kartlarında hover lift (-translate-y-1) + gölge + ikon rotate-6; ana ürün kartında hover shadow büyümesi; butonlarda hover yükselme; içecek kartları 80ms kademeli (stagger) giriş
+    53→- Lint temiz; dev.log temiz (tüm istekler 200); reveal lint hatası (set-state-in-effect) motion-reduce CSS yaklaşımıyla çözüldü
+    54→- Testler: JSON-LD geçerli parse; mobil çubuk 72px altta, 3 doğru link; back-to-top masaüstünde 600px sonrası görünür mobilde gizli; scroll-spy offset'lerle doğru (konum top 1516, 1500px kaydırmada Konum aktif); VLM mobil görsel doğrulaması başarılı
+    55→
+    56→Stage Summary:
+    57→- Durum: STABİL + GELİŞTİRİLDİ. Tek sayfa tasarım ve tüm iş verileri aynen korundu (fiyatlar/telefon/Instagram/adres/harita linkleri)
+    58→- Eklenenler: JSON-LD SEO, mobil hızlı işlem çubuğu (safe-area destekli), yukarı çık butonu, scroll-spy nav, scroll reveal animasyonları, hover micro-interactions
+    59→- Doğrulama: agent-browser DOM + görsel testler, VLM kontrol, lint, dev.log — hepsi geçti
+    60→
+    61→Unresolved issues or risks:
+    62→- Risk yok; tüm iş sabitleri (420₺/60₺/70₺/50₺/60₺/30₺/20₺, +90 543 486 07 22, Instagram URL, adres, haritalar) site-config.ts üzerinden tek kaynaktan yönetiliyor
+    63→- Sonraki tur için öneriler: (1) Açılış saatinin gösterilmesi (kullanıcıdan saat bilgisi alınmalı — bilinmiyor, uydurulmamalı), (2) OG/Twitter kart görseli için özel 1200x630 görsel üretimi, (3) lazımsa performans: görsellerin WebP'e çevrilmesi, (4) QR kod bölümü (Instagram utm_source=qr parametresi QR kullanıldığını gösteriyor) — kullanıcı onayıyla
+    64→
+    65→---
+    66→Task ID: 3
+    67→Agent: Z.ai Code (webDevReview cron - tur 2)
+    68→Task: QA + OG kart görseli üretimi + erişilebilirlik + paylaş butonu + print stilleri (iş verileri sabit kalmalı)
+    69→
+    70→Work Log:
+    71→- worklog.md incelendi; önerilen kalemlerden uygulanabilir olanlar seçildi (açılış saati ve QR bölümü kullanıcı onayı gerektirdiğinden YAPILMADI)
+    72→- QA (agent-browser): fiyatlar [420, 50, 60, 70, 60, 30, 20], telefon, JSON-LD, mobil çubuk, title — tümü doğru; konsol hatası yok
+    73→- YENİ: Branded OG/Twitter kart görseli (public/og-card.jpg, 1200x630) — download/scripts/gen_og.py (PIL) ile üretildi: krem doku + brand renk başlıklar (EDİRNE kırmızı / TAVA CİĞER turuncu, Nimbus Sans Narrow condensed) + gerçek ciğer fotoğrafı yuvarlak köşeli kart + 420 ₺ rozeti + WhatsApp yeşil şeridi (+90 543 486 07 22); ilk sürümde 'TAVA CİĞER' kesiliyordu → auto-fit font ölçekleme ile düzeltildi; VLM ile metin bütünlüğü doğrulandı
+    74→- YENİ: layout.tsx openGraph.images → /og-card.jpg (1200x630, alt metinli) + twitter card (summary_large_image) eklendi
+    75→- YENİ: Sayfayı Paylaş butonu (share-button.tsx) — Web Share API (mobil native paylaşım) + panoya kopyala fallback + toast bildirimi; AbortError sessizce yutulur; header'da Instagram butonu yanında
+    76→- YENİ: Skip-to-content linki ('İçeriğe geç') — sr-only, focus'ta sol üstte görünür (klavye erişilebilirliği)
+    77→- YENİ: Print (yazdırma) stilleri — header/footer/butonlar/hero/mobil çubuk gizlenir; menü + konum bilgisi şık yazdırılır (a[data-slot='button'] ile buton-linkler gizlenir ama konumdaki telefon/Instagram metin linkleri korunur); fiyat kırmızıları korunur; @page 14mm
+    78→- BUG FIX: Print çıktısı ilk denemede boş çıktı (reveal animasyonları opacity-0'da takılı) → @media print'te * { opacity:1 !important; transform:none !important } ile düzeltildi; pdftoppm + VLM ile 2 sayfalık çıktı doğrulandı (menü 420₺ + içecekler + konum bilgisi eksiksiz)
+    79→- STİL: ::selection brand kırmızı-cream; :focus-visible turuncu outline; header'a hafif kalıcı gölge (shadow-[0_1px_12px_rgba(29,20,15,0.04)]); içecek fiyatında group-hover turuncu renk geçişi
+    80→- Testler: OG meta (og:image → .../og-card.jpg, twitter:card → summary_large_image) DOM'da doğrulandı; paylaş butonu tıklandı → 'Bağlantı kopyalandı' toast göründü; skip link focus'ta görünüyor; mobilde share butonu görünür, taşma yok; lint temiz; dev.log temiz
+    81→
+    82→Stage Summary:
+    83→- Durum: STABİL + GELİŞTİRİLDİ. Tek sayfa tasarım ve tüm iş verileri aynen korundu
+    84→- Eklenenler: branded OG/Twitter görseli, sayfa paylaş butonu (Web Share API + clipboard + toast), skip-to-content linki, print/yazdırma desteği, selection/focus-visible stilleri, header gölgesi, içecek fiyat hover detayı
+    85→- Düzeltilen hata: print'te reveal animasyonlarından dolayı boş sayfa → CSS ile çözüldü ve doğrulandı
+    86→- Üretilen varlıklar: public/og-card.jpg (1200x630), download/scripts/gen_og.py (yeniden üretilebilir script), download/scripts/print_test2.pdf (örnek print çıktısı)
+    87→
+    88→Unresolved issues or risks:
+    89→- Risk yok; iş sabitleri site-config.ts'te tek kaynak
+    90→- Not: navigator.share olmayan masaüstü tarayıcılarda paylaş → panoya kopyalama olarak çalışır (doğrulandı)
+    91→- Sonraki tur için öneriler: (1) açılış saatleri bölümü — KULLANICIDAN saat bilgisi istenmeli (uydurma yok), (2) menü görselleri için WebP dönüşümü / next/image format=webp (performans, opsiyonel), (3) QR kod (site adresi) — kullanıcı onayıyla footer'a eklenebilir, (4) Lighthouse performans denetimi agent-browser ile yapılabilir
+    92→
+    93→---
+    94→Task ID: 4
+    95→Agent: Z.ai Code (webDevReview cron - tur 3)
+    96→Task: QA + kritik nav hatası düzeltilmesi + WhatsApp sipariş oluşturucu entegrasyonu + stil detayları (iş verileri sabit kalmalı)
+    97→
+    98→Work Log:
+    99→- worklog.md incelendi; önceki turların durumu (stabil + JSON-LD, mobil çubuk, back-to-top, scroll-spy, reveal, OG kart, paylaş butonu, print desteği) teyit edildi
+   100→- QA (agent-browser, 375x812 + 1280x800): fiyatlar, telefon, Instagram, harita linkleri, JSON-LD, konsol — tümü temiz; yatay taşma yok
+   101→- KRİK BULGU: src/components/order-builder.tsx dosyası mevcuttu ANCAK page.tsx'e hiç entegre edilmemişti → header'daki "Sipariş" nav linki (#siparis) VAR OLMAYAN bir çapaya işaret ediyordu (ölü link) ve scroll-spy "siparis" bölümünü hiç aktifleştiremiyordu
+   102→- BUG FIX: OrderBuilder sayfaya entegre edildi (Menü ile Konum arasına) → #siparis çapası artık var, nav linki çalışıyor, scroll-spy "Sipariş"i doğru vurguluyor
+   103→- ÖZELLİK (hazır componente küçük iyileştirmelerle): adet seçiciler (+/-) ana ürün ve 6 içecekte, canlı "Sipariş Özeti" paneli (koyu kart, lg:sticky), seçilenler + toplam tutar gerçek zamanlı, "WhatsApp ile Gönder" → wa.me/905434860722'ye ön-doldurulmuş Türkçe sipariş mesajı (ürünler, adetler, satır tutarları, toplam), "Seçimleri Temizle" butonu; Reveal giriş animasyonları eklendi; bölüm padding'i menu bölümüyle uyumlu hale getirildi; no-print sınıfı eklendi
+   104→- STİL: Kayan şerit (marquee-strip.tsx) — hero altında eğik (-rotate-1) koyu şerit, gerçek metinler (Edirne Tava Ciğer, 160 gr Porsiyon, Kartal/İstanbul, WhatsApp Sipariş, Taze Hazırlanır) + alev ikonları, CSS keyframes ile kesintisiz döngü, prefers-reduced-motion'da durur
+   105→- STİL: Okuma ilerleme çubuğu (scroll-progress.tsx) — header alt kenarında brand gradyan, rAF throttle, scaleX transform
+   106→- STİL: Bölüm süsü (section-ornament.tsx) — sipariş ve konum arasında gradyan çizgiler + alev elmastı rozet
+   107→- STİL: Hero görselinde 4 köşe çerçeve aksanı (turuncu L-braketler)
+   108→- STİL: Ana ürün kartında "Şefin Önerisi" gradyan rozeti (görsel sol üst)
+   109→- STİL: Footer — üstte brand gradyan çizgi + arka planda dev soluk "YUSUF" filigranı (font-display), overflow-hidden
+   110→- STİL: Tüm fiyat gösterimlerine tabular-nums (hizalı rakamlar)
+   111→- CSS: cy-marquee keyframes + reduced-motion kuralı; kök div'e overflow-x-clip (döndürülmüş şeridin taşması engellendi, sticky header'a zarar vermez)
+   112→- Testler: sipariş akışı uçtan uca — 2×Ciğer + 1×Kutu Kola = 910 ₺ doğru hesaplandı, mesaj metni doğru (Merhaba Ciğerci Yusuf! ... Toplam: 910 ₺), temizleme çalışıyor; nav tıklaması section top = 80px'e (scroll-mt-20) tam oturuyor, aria-current="true" doğru; mobilde 14 stepper butonu görünür/dokunulabilir, yatay taşma YOK (375px); VLM görsel doğrulama: masaüstü sipariş bölümü, footer (gradyan çizgi + filigran + iletişim), mobil düzen, marquee — hepsi temiz; print PDF testi: sipariş oluşturucu/marquee/header/footer doğru şekilde gizli, menü fiyatları (420/50/60/70/60/30/20) + konum bilgileri yazdırılıyor; lint temiz; dev.log temiz
+   113→
+   114→Stage Summary:
+   115→- Durum: STABİL + GELİŞTİRİLDİ. Tek sayfa tasarım ve tüm iş verileri aynen korundu (420₺/50₺/60₺/70₺/60₺/30₺/20₺, +90 543 486 07 22, Instagram URL, adres, haritalar — hepsi DOM'da doğrulandı)
+   116→- Düzeltilen hata: "Sipariş" nav linki ölü çapaya işaret ediyordu → OrderBuilder entegrasyonuyla çözüldü
+   117→- Eklenenler: WhatsApp sipariş oluşturucu (adet seçiciler + canlı özet + ön-doldurulmuş mesaj), kayan şerit, okuma ilerleme çubuğu, bölüm süsü, hero köşe braketleri, Şefin Önerisi rozeti, footer gradyan çizgisi + YUSUF filigranı, tabular-nums fiyatlar
+   118→- Not: OrderBuilder bölümü "Siparişini Oluştur" başlığıyla Menü→Sipariş→Konum akışına eklendi; masaüstünde sağ panel sticky, mobilde altta yığılmış (doğru davranış)
+   119→
+   120→Unresolved issues or risks:
+   121→- Risk yok; tüm iş sabitleri site-config.ts'te tek kaynak; OrderBuilder fiyatları ve WhatsApp numarası da SITE_CONFIG'ten okuyor
+   122→- Bilinen küçük not: sipariş seçimleri sayfa yenilenince sıfırlanır (localStorage kalıcılığı bilinçli olarak eklenmedi — hidrasyon/lint karmaşası ve basitlik tercih edildi)
+   123→- Sonraki tur için öneriler: (1) açılış saatleri — KULLANICIDAN bilgi alınmalı (uydurma yok), (2) menü görselleri WebP dönüşümü (performans, opsiyonel), (3) QR kod bölümü — kullanıcı onayıyla, (4) gerekiyorsa OrderBuilder'a localStorage kalıcılığı (kullanıcı isterse)
+   124→
+   125→---
+   126→Task ID: 5
+   127→Agent: Z.ai Code (webDevReview cron - tur 4)
+   128→Task: QA + interaktif Google Maps gömmesi + sipariş kalıcılığı (localStorage) + telefon kopyalama + stil detayları (iş verileri sabit kalmalı)
+   129→
+   130→Work Log:
+   131→- worklog.md incelendi; tur 3 sonrası durum stabil (sipariş oluşturucu, marquee, ilerleme çubuğu, süsler, filigran — hepsi çalışıyor)
+   132→- QA (agent-browser, 1280x800 + 375x812): tüm iş verileri, linkler, JSON-LD, konsol temiz; mobilde yatay taşma yok
+   133→- ÖZELLİK: İnteraktif Google Maps gömmesi (map-embed.tsx) — Konum bölümünde iletişim kartının yanında (lg:grid-cols-2; mobilde altında), koordinatlar SITE_CONFIG'teki directions URL'sinden regex ile türetiliyor (tek kaynak, 40.8898,29.18467), hl=tr &output=embed (API anahtarı gerekmez), lazy loading, iframe'e erişilebilir title; sol üstte yüzen 'Ciğerci Yusuf — Kartal / İstanbul' etiket çipi (maps.label'den); hero görseliyle uyumlu çerçeve (rounded-[1.75rem] border-4 border-card shadow-2xl); no-print
+   134→- ÖZELLİK: Sipariş oluşturucuda localStorage kalıcılığı — seçimler sayfa yenilense bile geri yüklenir (anahtar: cy-siparis-secimleri); güvenlik: sadece geçerli ürün adları + 1-99 tam sayı kabul edilir (bozuk/şüpheli veri sessizce ayıklanır — 'Hacked Item': 50 ve 'Açık Ayran': 'abc' reddedildi, Fanta: 3 kabul edildi şeklinde test edildi); 'Seçimleri Temizle' anahtarı da siler; adet üst sınırı 99 (MAX_QTY); hidrasyon güvenli (restorasyon effect içinde queueMicrotask ile, set-state-in-effect lint kuralına uygun)
+   135→- ÖZELLİK: Telefon numarası kopyalama butonu (copy-phone-button.tsx) — Konum kartında numara yanında küçük ikon buton; modern Clipboard API + eski tarayıcılar için execCommand/textarea fallback; başarıda 'Numara kopyalandı' toast, başarısızlıkta açıklayıcı destructive toast; no-print
+   136→- STİL: Krem arka planda çok hafif gren (grain) dokusu — .bg-cream-texture'e SVG feTurbulence veri-URI katmanı eklendi (gri tonlu, opacity 0.05, 180px döşeme) — performans dostu (ekstra DOM yok, sadece background katmanı)
+   137→- STİL: Hero görselinde '160 gr' dairesel damga rozeti — sağ üst köşede, kesikli kenarlıklı (border-dashed), brand gradyan dolgu, rotate-12 (hover'da rotate-6), gölge; gram bilgisi menu.main.gram'dan türetiliyor (tek kaynak)
+   138→- STİL: Mobil hızlı işlem çubuğundaki WhatsApp butonuna yumuşak nabız halkası (cy-pulse) — yeşil ring 2.4sn döngü, prefers-reduced-motion'da kapalı
+   139→- STİL: Konum kartı satırlarında (Adres/Telefon/Instagram) hover'da ikon scale-110 mikro-etkileşim (motion-safe)
+   140→- Testler: kalıcılık uçtan uca — 1×Ciğer + 2×Ayran = 520 ₺ seçildi, localStorage'a yazıldı, sayfa yenilendi, seçimler VE 520 ₺ toplam geri yüklendi; temizleme → anahtar silindi + toplam 0 ₺; kopyalama butonu gerçek tıklamayla (user activation) 'Numara kopyalandı +90 543 486 07 22 — sipariş için hazır.' toast'unu gösterdi; VLM görsel doğrulama: masaüstü Konum (kart + kırmızı pinli harita + etiket çipi + kopya butonu), hero (160 GR damgası şık, L-braketlerle uyumlu), mobil hero (damga taşmıyor), mobil harita (düzgün yüklendi, boş kutu değil), print PDF (harita/sipariş/hero gizli, menü 420/50/60/70/60/30/20 + konum yazdırılıyor) — hepsi geçti; mobilde yatay taşma yok (375px), harita yüksekliği mobilde 288px (h-72) masaüstünde karta eşit; lint temiz; dev.log temiz; konsolda hata/yarıklama yok
+   141→
+   142→Stage Summary:
+   143→- Durum: STABİL + GELİŞTİRİLDİ. Tek sayfa tasarım ve tüm iş verileri aynen korundu (19 maddelik otomatik doğrulama: fiyatlar, telefon, tel:, wa.me ×6, Instagram, yorum + yol tarifi linkleri, adres, JSON-LD, OG görseli — hepsi doğru)
+   144→- Eklenenler: interaktif Google Maps (koordinatlar config'ten türetiliyor), sipariş seçimlerinde localStorage kalıcılığı (santize edilmiş geri yükleme), telefon kopyalama butonu (fallback'li), gren dokusu, 160 gr damgası, mobil WhatsApp nabız animasyonu, konum kartı hover mikro-etkileşimleri
+   145→- Konum bölümü yeni düzeni: masaüstünde sol iletişim kartı + sağ harita; mobilde kart altında harita
+   146→
+   147→Unresolved issues or risks:
+   148→- Risk yok; harita koordinatları ve etiketi SITE_CONFIG'ten türetiliyor (directions URL + maps.label), harita iframe'i yazdırmada gizli
+   149→- Küçük not: Google Maps gömmesi internet bağlantısı gerektirir (çevrimdışıysa iframe boş kalır — normal davranış, sayfanın gerisi etkilenmez)
+   150→- Küçük not: headless test ortamında sentetik tıklamalarda Clipboard API user activation gerektirdiğinden execCommand fallback devreye girer; gerçek tarayıcıda birincil yol çalışıyor (doğrulandı)
+   151→- Sonraki tur için öneriler: (1) açılış saatleri — KULLANICIDAN bilgi alınmalı (uydurma yok), (2) menü görselleri WebP dönüşümü (performans, opsiyonel), (3) QR kod bölümü — kullanıcı onayıyla, (4) Sipariş Özeti'ne 'seçimler kaydedildi' küçük göstergesi (opsiyonel, kalıcılık zaten çalışıyor)
+   152→
+   153→---
+   154→Task ID: 6
+   155→Agent: Z.ai Code (webDevReview cron - tur 5)
+   156→Task: QA + 'Nasıl Sipariş Verilir' rehberi + mobil yüzen sipariş çubuğu + geri yükleme bildirimi + WebP araştırması (iş verileri sabit kalmalı)
+   157→
+   158→Work Log:
+   159→- worklog.md incelendi; tur 4 sonrası durum stabil (harita, kalıcılık, kopyalama butonu çalışıyor)
+   160→- QA (agent-browser, 1280x800 + 375x812): tüm iş verileri, linkler, konsol temiz; mobilde yatay taşma yok
+   161→- PERFORMANS ARAŞTIRMASI (WebP): hero 493KB / plate 303KB → WebP q82 %15-45 tasarruf ama VLM karşılaştırmada görünür kalite kaybı (bulanıklık, renk solması — yemek fotoğrafı iştah açıcılığı azalıyor); q88-90'da ise dosya boyutu orijinale eşit (469KB vs 493KB, 310KB vs 303KB) → KARAR: WebP YAPILMADI — yemek fotoğrafları iş açısından kritik, kazanç anlamsız; karar worklog'a kaydedildi
+   162→- ÖZELLİK: 'Nasıl Sipariş Verilir?' 3-adım rehber bölümü (how-to-order.tsx) — Menü ile Sipariş Oluşturucu arasına yerleştirildi; 3 kart: 'Ürünlerini Seç' (ClipboardList) / 'WhatsApp ile Gönder' (Send) / 'Taze Hazırlanır' (Flame); içerik yalnızca sitede var olan gerçek akışı anlatıyor (uydurma iş iddiası yok); gradyan ikon daireleri + mürekkep numara rozetleri (1,2,3) + masaüstünde kesikli turuncu bağlantı çizgisi + hover lift/rotate; no-print; Reveal stagger animasyonları
+   163→- ÖZELLİK: Mobil yüzen sipariş çubuğu (order-builder.tsx içinde) — ürün seçiliyken VE özet paneli ekranda görünür değilken görünür (IntersectionObserver, threshold 0.3): koyu çubukta 'n ürün' + turuncu toplam + çöp (temizle) + yeşil 'Gönder' (WhatsApp); mobil hızlı işlem çubuğunun ÜZERİNDE (bottom: 4.75rem + safe-area), md:hidden, slide-in-from-bottom animasyonu, aria-live polite, no-print
+   164→- ÖZELLİK: Geri yükleme bildirimi — sayfa yüklenirken kayıtlı seçim varsa 'Kayıllı seçimler geri yüklendi' toast'u; BUG DÜZELTMESİ: toast ilk mount'ta Toaster dinleyicisi kaydolmadan tetiklendiği için görünmüyordu → 300ms setTimeout ile gecikmeli gösterim (ağaç sırası: OrderBuilder effect'i Toaster effect'inden önce çalışıyor)
+   165→- STİL: Özet paneline 'Seçimleriniz bu cihazda otomatik saklanır' ipucu satırı (RotateCcw mini ikon)
+   166→- Testler: yüzen çubuk uçtan uca — menüde 2 ürün (Ciğer+Kutu Kola) seçildi → '2 ÜRÜN 490 ₺' çubuğu göründü; özete kaydırınca çubuk GİZLENDİ, yukarı kaydırınca GERİ GELDİ; çubuktaki Gönder → doğru WhatsApp mesajı (1x Ciğer 420 ₺ + 1x Kutu Kola 70 ₺, Toplam 490 ₺); çubuktan temizle → çubuk kayboldu + localStorage silindi; restore toast'u — Fanta:2 kaydedildi, sayfa yenilendi → seçim geri yüklendi VE toast göründü; VLM: masaüstü nasıl-sipariş bölümü (3 kart + rozetler + kesikli çizgi) ve mobil yüzen çubuk (çakışma yok, net boşluk) doğrulandı; print PDF: rehber/sipariş/çubuklar/harita gizli, menü fiyatları + konum yazdırılıyor; lint temiz; dev.log temiz; konsol hatasız; mobil yatay taşma yok (375px, sayfa 6357px)
+   167→
+   168→Stage Summary:
+   169→- Durum: STABİL + GELİŞTİRİLDİ. Tek sayfa tasarım ve tüm iş verileri aynen korundu (15 maddelik otomatik doğrulama — hepsi doğru)
+   170→- Eklenenler: 'Nasıl Sipariş Verilir' 3-adım rehber (gerçek site akışını anlatan güvenli içerik), mobil yüzen sipariş çubuğu (akıllı gizleme), geri yükleme toast'u (zamanlama hatası düzeltildi), 'otomatik saklanır' ipucu
+   171→- WebP dönüşümü araştırıldı ve bilinçli olarak VAZGEÇİLDİ (kalite/boyut dengesi olumsuz — yemek fotoğrafları iş için kritik)
+   172→
+   173→Unresolved issues or risks:
+   174→- Risk yok; rehber içeriği uydurma iş bilgisi içermiyor (yalnızca site işlevleri + mevcut 'taze hazırlanır' ifadesi)
+   175→- Not: yüzen çubuk yalnızca mobilde (masaüstünde sticky özet paneli zaten görünür — bilinçli tasarım)
+   176→- Sonraki tur için öneriler: (1) açılış saatleri — KULLANICIDAN bilgi alınmalı (uydurma yok), (2) QR kod bölümü — kullanıcı onayıyla, (3) gerekiyorsa adım kartlarına tıklanabilir davranış (ilgili bölüme kaydırma) — opsiyonel, (4) Lighthouse tarzı performans ölçümü — agent-browser ile denenebilir
+   177→
+   178→---
+   179→Task ID: 7
+   180→Agent: Z.ai Code (webDevReview cron - tur 6)
+   181→Task: QA + fotoğraf büyütme (lightbox) + 'Menüyü Yazdır' butonu + stil detayları (iş verileri sabit kalmalı)
+   182→
+   183→Work Log:
+   184→- worklog.md incelendi; tur 5 sonrası durum stabil (rehber, yüzen çubuk, kalıcılık çalışıyor)
+   185→- ORTAM NOTU: agent-browser başlatma hatası (fork: Resource temporarily unavailable — önceki oturumların kalan chromium süreçleri) → pkill ile temizlendi, yeni oturum sorunsuz açıldı
+   186→- QA (agent-browser, 1280x800 + 375x812): tüm iş verileri, 5 bölüm (anasayfa/menu/nasil-siparis/siparis/konum), harita, JSON-LD doğru; konsol hatasız; mobilde yatay taşma yok
+   187→- ÖZELLİK: Fotoğraf büyütme — PhotoZoom bileşeni (photo-zoom.tsx): hero ve menü ana ürün fotoğrafları tıklanabilir tam ekran lightbox; kapsayıcı alanı kaplayan görünmez tetikleyici buton (aria-label '... — büyüt'); koyu ink/92 + backdrop-blur arka plan; zoom-in-95 + fade-in açılış animasyonu; ESC tuşu, arka plan tıklaması ve X butonu ile kapanış (X hover'da rotate-90); açılınca kapatma butonuna odak, kapanınca tetikleyiciye odak geri dönüşü; açıkken body scroll kilidi; altta açıklama + marka imzası (font-display turuncu); no-print; next/image fill + object-contain (oran korunur)
+   188→- ÖZELLİK: 'Menüyü Yazdır' butonu (print-menu-button.tsx) — İçecekler başlık satırının sağında; window.print() çağırır; mevcut özel print CSS ile sadece menü + konum bilgisi şık şekilde yazdırılır; buton kendisi print'te otomatik gizli (global button gizleme kuralı) + no-print; mobilde tek satıra sığıyor (VLM doğrulandı)
+   189→- STİL: Fotoğraflarda hover'da beliren 'Büyüt' çipi (ZoomIn ikonu, ink/55 blur pill, group-hover opacity) — menü fotoğrafında 'Tabağı Gör' özel metni
+   190→- STİL: 'Menüyü Gör' butonundaki ok, hover'da sağa kayar (translate-x-1, motion-safe)
+   191→- STİL: Kayan şerit üzerine gelince duraklar (animation-play-state: paused)
+   192→- Testler: lightbox uçtan uca — hero foto tıklandı → dialog açıldı (aria-modal, doğru aria-label, görsel yüklendi, body kilitli, odak kapatma butonunda); ESC → kapandı + body kilidi açıldı + odak tetikleyiciye geri döndü; menü foto → açıldı, arka plan tıklaması → kapandı; print butonu → window.print tetiklendi (mock ile doğrulandı); VLM: lightbox (koyu arka plan + X + alt bilgi + contain oranı), İçecekler satırı masaüstü (ikon + başlık + çizgi + buton düzeni) ve mobil (tek satır, taşma yok) doğrulandı; print PDF: buton/çip/lightbox/harita gizli, menü 420/50/60/70/60/30/20 + konum yazdırılıyor; 16 maddelik otomatik iş verisi doğrulaması geçti; lint temiz; dev.log temiz
+   193→- Not (konsol): 'plate.jpg LCP' geliştirme modu uyarısı yalnızca test oturumlarında kaydırma konumu geri yüklendiğinde görülüyor (taze oturumda yok) — gerçek kullanıcılar sayfa başında açılır (hero priority/eager), üretimde sorun değil; bilinçli olarak lazy bırakıldı
+   194→
+   195→Stage Summary:
+   196→- Durum: STABİL + GELİŞTİRİLDİ. Tek sayfa tasarım ve tüm iş verileri aynen korundu
+   197→- Eklenenler: fotoğraf büyütme lightbox (erişilebilir: odak yönetimi, ESC, aria-modal), 'Menüyü Yazdır' butonu, hover büyütme çipleri, ok kayma animasyonu, marquee duraklatma
+   198→- Lightbox 2 fotoğrafta aktif: hero (ciger-yusuf-portion.jpg) + menü ana ürün (ciger-yusuf-plate.jpg) — her ikisi de mevcut varlıklar, yeni görsel eklenmedi
+   199→
+   200→Unresolved issues or risks:
+   201→- Risk yok; lightbox yalnızca mevcut fotoğrafları kullanıyor, iş verilerine dokunmuyor
+   202→- Küçük not: lightbox görseli tıklanınca açılır (önceden sayfada yüklü olduğundan anında görünür)
+   203→- Sonraki tur için öneriler: (1) açılış saatleri — KULLANICIDAN bilgi alınmalı (uydurma yok), (2) QR kod bölümü — kullanıcı onayıyla, (3) gerekiyorsa lightbox'ta fotoğraflar arası geçiş (yalnızca 2 foto var — değer sınırlı), (4) istenirse PWA servis çalışanı (çevrimdışı destek) — karmaşık, kullanıcı onayıyla
+   204→
+   205→---
+   206→Task ID: 8
+   207→Agent: Z.ai Code (webDevReview cron - tur 7)
+   208→Task: QA + menüden hızlı sipariş ekleme butonları + Sipariş Notu alanı + başlık/elmas/shimmer stil detayları (iş verileri sabit kalmalı)
+   209→
+   210→Work Log:
+   211→- worklog.md incelendi; tur 6 sonrası durum stabil (lightbox, print butonu, yüzen çubuk çalışıyor)
+   212→- QA (agent-browser, 1280x800 + 375x812): fiyatlar [420, 50, 60, 70, 60, 30, 20], telefon, 6 WhatsApp linki, Instagram, adres, yorum + yol tarifi linkleri, 5 bölüm, JSON-LD — tümü doğru; konsol hatasız; mobilde yatay taşma yok; lightbox tetikleyicileri yerinde
+   213→- ÖZELLİK: Menüden hızlı sipariş ekleme (quick-add-button.tsx) — ana ürün kartına "Siparişe Ekle" tam buton (WhatsApp "Sipariş Ver" yanında), 6 içecek kartına fiyatın sağından yuvarlak + buton; tıklanınca `cy-quick-add` CustomEvent yayınlar, OrderBuilder dinleyip adeti artırır (VALID_NAMES doğrulamalı); toast bildirimi: "Siparişe eklendi — {ürün}" + "Siparişi Gör" aksiyon butonu → #siparis'e smooth scroll (bölüm tam 80px'e oturuyor, doğrulandı); adet otomatik localStorage'a kaydedilir, mobil yüzen çubuk anında güncellenir (test: 2 hızlı ekleme → "2 ÜRÜN 490 ₺" çubuğu göründü)
+   214→- ÖZELLİK: Sipariş Notu alanı (order-builder.tsx) — özet panelinde ürün listesi altında StickyNote etiketli textarea; maksimum 200 karakter (canlı sayaç x/200), trim edilerek saklanır (anahtar: cy-siparis-notu, ayrı localStorage anahtarı); sayfa yenilendiğinde seçimlerle birlikte geri yüklenir; WhatsApp mesajına "Not: {metin}" olarak eklenir (ürünlerden sonra, Toplam'dan önce); "Seçimleri Temizle" hem seçimleri hem notu siler (her iki anahtar da siliniyor — test edildi)
+   215→- STİL: HeadingRule bileşeni (heading-rule.tsx) — Menü/Sipariş/Konum başlıklarındaki düz gradyan çizgi, ortada 45° döndürülmüş gradyan elmas + alev ikonu içeren yeni süsle değiştirildi (3 yerde tutarlı); print'te de şık görünür (doğrulandı)
+   216→- STİL: cy-shimmer parlama süpürmesi — hero'daki 420 ₺ fiyat rozeti ve "Şefin Önerisi" rozetinde 3.6sn'de bir soldan sağa beyaz ışık süpürmesi (::after pseudo-element, overflow-hidden); prefers-reduced-motion'da kapalı; print'te animasyon yok (global print kuralı)
+   217→- STİL: Fiş (receipt) dokunuşu — özet panelindeki Toplam ayracı kesikli (border-dashed border-cream/25) yapıldı
+   218→- Testler: hızlı ekleme uçtan uca — Coca Cola (Kutu) + Ciğer + Fanta + Damla Su eklendi, localStorage doğru, toast + aksiyon göründü, WhatsApp mesajı tam doğru (4 satır + Not + Toplam 570 ₺); not kalıcılığı — "Lütfen bol soğanlı olsun, teşekkürler" yazıldı, sayfa yenilendi, not VE seçimler geri yüklendi, restore toast göründü; temizleme — iki anahtar da silindi; VLM görsel doğrulama: masaüstü menü (çift buton + elmas süs), içecekler (her kartta + butonu, taşma yok), özet paneli (not alanı + 490 ₺ + yeşil buton), mobil içecek kartları (isim/hacim/fiyat/+ düzgün sığıyor), mobil yüzen çubuk (2 ÜRÜN 490 ₺ + Gönder + çöp), print PDF 2 sayfa (420/50/60/70/60/30/20 + adres/telefon, etkileşimli öğe yok, elmas süs yazdırılıyor); lint temiz; dev.log temiz; konsol hatasız; mobilde yatay taşma yok
+   219→
+   220→Stage Summary:
+   221→- Durum: STABİL + GELİŞTİRİLDİ. Tek sayfa tasarım ve tüm iş verileri aynen korundu (16 maddelik otomatik doğrulama — fiyatlar, telefon, tel:, wa.me ×6, Instagram, yorum + yol tarifi linkleri, adres, JSON-LD, bölümler — hepsi doğru)
+   222→- Eklenenler: menüden hızlı sipariş ekleme (7 buton: ana ürün + 6 içecek; event tabanlı, toast'tan bölüme kaydırma), Sipariş Notu (kalıcı, WhatsApp mesajına dahil), HeadingRule elmas süsü (3 bölüm), shimmer rozetler (2), fiş tarzı kesikli ayraç
+   223→- Mimari not: hızlı ekleme CustomEvent (`cy-quick-add`) ile çalışır — OrderBuilder tek durum sahibi kalır, localStorage/mobil yüzen çubuk/restore akışı değişmedi
+   224→
+   225→Unresolved issues or risks:
+   226→- Risk yok; quick-add yalnızca VALID_NAMES'teki gerçek ürün adlarını kabul eder (şüpheli payload sessizce yok sayılır)
+   227→- Küçük not: toast'lar üst üste binmez (Radix sıralı gösterir); hızlı tıklamada birden çok toast görünebilir — normal davranış
+   228→- Sonraki tur için öneriler: (1) açılış saatleri — KULLANICIDAN bilgi alınmalı (uydurma yok), (2) QR kod bölümü — kullanıcı onayıyla, (3) özet panelinde ürün satırına mini silme butonu (stepper yerine) — opsiyonel estetik, (4) lightbox'ta fotoğraf arası geçiş — yalnız 2 foto var, değer sınırlı
+   229→

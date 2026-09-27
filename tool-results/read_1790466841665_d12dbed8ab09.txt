@@ -1,0 +1,775 @@
+     1→     1→import Image from "next/image";
+     2→     2→import Link from "next/link";
+     3→     3→import {
+     4→     4→  ArrowRight,
+     5→     5→  CupSoda,
+     6→     6→  Droplet,
+     7→     7→  Flame,
+     8→     8→  Instagram,
+     9→     9→  Leaf,
+    10→    10→  MapPin,
+    11→    11→  Navigation,
+    12→    12→  Phone,
+    13→    13→  ShoppingBag,
+    14→    14→  Star,
+    15→    15→} from "lucide-react";
+    16→    16→import { Button } from "@/components/ui/button";
+    17→    17→import { DirectionsButton } from "@/components/directions-button";
+    18→    18→import { WhatsAppIcon } from "@/components/whatsapp-icon";
+    19→    19→import { Reveal } from "@/components/reveal";
+    20→    20→import { MobileActionBar } from "@/components/mobile-action-bar";
+    21→    21→import { BackToTop } from "@/components/back-to-top";
+    22→    22→import { NavLinks } from "@/components/nav-links";
+    23→    23→import { ShareButton } from "@/components/share-button";
+    24→    24→import { ScrollProgress } from "@/components/scroll-progress";
+    25→    25→import { MarqueeStrip } from "@/components/marquee-strip";
+    26→    26→import { SectionOrnament } from "@/components/section-ornament";
+    27→    27→import { OrderBuilder } from "@/components/order-builder";
+    28→    28→import { HowToOrder } from "@/components/how-to-order";
+    29→    29→import { MapEmbed } from "@/components/map-embed";
+    30→    30→import { CopyPhoneButton } from "@/components/copy-phone-button";
+    31→    31→import { CopyAddressButton } from "@/components/copy-address-button";
+    32→    32→import { PhotoZoom } from "@/components/photo-zoom";
+    33→    33→import { PrintMenuButton } from "@/components/print-menu-button";
+    34→    34→import { QuickAddButton } from "@/components/quick-add-button";
+    35→    35→import { HeadingRule } from "@/components/heading-rule";
+    36→    36→import { AdminTrigger } from "@/components/admin-trigger";
+    37→    37→import { getEffectiveMenu } from "@/lib/menu-server";
+    38→    38→import type { EditableMenuItem } from "@/lib/menu";
+    39→    39→import { SITE_CONFIG, type DrinkItem } from "@/lib/site-config";
+    40→    40→
+    41→    41→const { phone, whatsappUrl, instagram, address, maps, hero, location } =
+    42→    42→  SITE_CONFIG;
+    43→    43→
+    44→    44→// Menü verileri her istekte veritabanından okunur: yönetici düzenlemeleri
+    45→    45→// tüm ziyaretçilere anında yansır ( dinamik render gerekli).
+    46→    46→export const dynamic = "force-dynamic";
+    47→    47→
+    48→    48→function formatPrice(price: number) {
+    49→    49→  return `${price} ₺`;
+    50→    50→}
+    51→    51→
+    52→    52→function DrinkIcon({ icon }: { icon: DrinkItem["icon"] }) {
+    53→    53→  if (icon === "droplet") return <Droplet className="size-5" />;
+    54→    54→  return <CupSoda className="size-5" />;
+    55→    55→}
+    56→    56→
+    57→    57→
+    58→    58→
+    59→    59→export default async function Home() {
+    60→    60→  // Yayındaki menü: varsayılanlar + yönetici düzenlemeleri (veritabanı)
+    61→    61→  const menu = await getEffectiveMenu();
+    62→    62→
+    63→    63→  const jsonLd = {
+    64→    64→    "@context": "https://schema.org",
+    65→    65→    "@type": "Restaurant",
+    66→    66→    name: SITE_CONFIG.brand.fullName,
+    67→    67→    alternateName: "Edirne Tava Ciğer",
+    68→    68→    description:
+    69→    69→      "Edirne usulü ince kesim, yağda kızartılan yaprak ciğer. Kartal İstanbul'da geleneksel tava ciğer ve içecekler.",
+    70→    70→    servesCuisine: ["Türk Mutfağı", "Edirne Ciğeri", "Tava Ciğer"],
+    71→    71→    telephone: "+905434860722",
+    72→    72→    url: "https://edirnecigercisikartal.space-z.ai",
+    73→    73→    priceRange: "₺₺",
+    74→    74→    currenciesAccepted: "TRY",
+    75→    75→    address: {
+    76→    76→      "@type": "PostalAddress",
+    77→    77→      streetAddress: "Çırçır Caddesi No:12",
+    78→    78→      addressLocality: "Kartal",
+    79→    79→      addressRegion: "İstanbul",
+    80→    80→      postalCode: "34860",
+    81→    81→      addressCountry: "TR",
+    82→    82→    },
+    83→    83→    geo: {
+    84→    84→      "@type": "GeoCoordinates",
+    85→    85→      latitude: 40.8898,
+    86→    86→      longitude: 29.18467,
+    87→    87→    },
+    88→    88→    sameAs: [
+    89→    89→      "https://www.instagram.com/edirnetavaciger_kartal",
+    90→    90→    ],
+    91→    91→    hasMap: maps.directions,
+    92→    92→    acceptsReservations: "False",
+    93→    93→    hasMenu: {
+    94→    94→      "@type": "Menu",
+    95→    95→      hasMenuSection: [
+    96→    96→        {
+    97→    97→          "@type": "MenuSection",
+    98→    98→          name: "Ciğer",
+    99→    99→          hasMenuItem: [
+   100→   100→            {
+   101→   101→              "@type": "MenuItem",
+   102→   102→              name: menu.main.title,
+   103→   103→              description:
+   104→   104→                "Yanında soğan, domates ve kızartılmış biber ile sıcak servis edilir.",
+   105→   105→              offers: {
+   106→   106→                "@type": "Offer",
+   107→   107→                price: menu.main.price,
+   108→   108→                priceCurrency: "TRY",
+   109→   109→              },
+   110→   110→            },
+   111→   111→          ],
+   112→   112→        },
+   113→   113→        {
+   114→   114→          "@type": "MenuSection",
+   115→   115→          name: "İçecekler",
+   116→   116→          hasMenuItem: menu.drinks.items.map((d) => ({
+   117→   117→            "@type": "MenuItem",
+   118→   118→            name: d.name,
+   119→   119→            offers: {
+   120→   120→              "@type": "Offer",
+   121→   121→              price: d.price,
+   122→   122→              priceCurrency: "TRY",
+   123→   123→            },
+   124→   124→          })),
+   125→   125→        },
+   126→   126→      ],
+   127→   127→    },
+   128→   128→  };
+   129→   129→
+   130→   130→  // Menü düzenleyicinin başlangıç değerleri (güncel yayındaki menü)
+   131→   131→  const adminItems: EditableMenuItem[] = [
+   132→   132→    {
+   133→   133→      id: menu.main.id,
+   134→   134→      name: menu.main.title,
+   135→   135→      price: menu.main.price,
+   136→   136→    },
+   137→   137→    ...menu.drinks.items.map((d) => ({
+   138→   138→      id: d.id,
+   139→   139→      name: d.name,
+   140→   140→      price: d.price,
+   141→   141→    })),
+   142→   142→  ];
+   143→   143→
+   144→   144→  return (
+   145→   145→    <div className="bg-cream-texture flex min-h-screen flex-col overflow-x-clip text-foreground">
+   146→   146→      <script
+   147→   147→        type="application/ld+json"
+   148→   148→        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+   149→   149→      />
+   150→   150→
+   151→   151→      {/* Klavye kullanıcıları için içeriğe geç bağlantısı */}
+   152→   152→      <a
+   153→   153→        href="#anasayfa"
+   154→   154→        className="sr-only z-[60] rounded-full bg-ink px-4 py-2 text-sm font-semibold text-cream focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:shadow-lg"
+   155→   155→      >
+   156→   156→        İçeriğe geç
+   157→   157→      </a>
+   158→   158→
+   159→   159→
+   160→   160→      {/* ================= HEADER ================= */}
+   161→   161→      <header className="sticky top-0 z-50 border-b border-border/60 bg-cream/80 shadow-[0_1px_12px_rgba(29,20,15,0.04)] backdrop-blur-md">
+   162→   162→        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
+   163→   163→          {/* Marka — uzun basılı tutunca yönetici girişi açılır */}
+   164→   164→          <AdminTrigger items={adminItems}>
+   165→   165→            <Link
+   166→   166→              href="#anasayfa"
+   167→   167→              className="group flex flex-col leading-none"
+   168→   168→              aria-label="Edirne Tava Ciğercisi ana sayfa"
+   169→   169→            >
+   170→   170→              <span className="text-[0.7rem] font-medium uppercase tracking-[0.22em] text-muted-foreground">
+   171→   171→                {SITE_CONFIG.brand.upper}
+   172→   172→              </span>
+   173→   173→              <span className="text-sm font-semibold tracking-wide text-ink/80 transition-colors group-hover:text-brand-red">
+   174→   174→                {SITE_CONFIG.brand.lower}
+   175→   175→              </span>
+   176→   176→            </Link>
+   177→   177→          </AdminTrigger>
+   178→   178→
+   179→   179→          <NavLinks />
+   180→   180→
+   181→   181→          <div className="flex items-center gap-2.5">
+   182→   182→            <Button
+   183→   183→              asChild
+   184→   184→              className="h-9 rounded-full bg-[#25D366] px-4 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#1ebe5a] hover:shadow-md"
+   185→   185→            >
+   186→   186→              <a
+   187→   187→                href={whatsappUrl}
+   188→   188→                target="_blank"
+   189→   189→                rel="noopener noreferrer"
+   190→   190→                aria-label="WhatsApp üzerinden sipariş ver"
+   191→   191→              >
+   192→   192→                <WhatsAppIcon className="size-4" />
+   193→   193→                <span className="hidden sm:inline">Sipariş Ver</span>
+   194→   194→                <span className="sm:hidden">Sipariş</span>
+   195→   195→              </a>
+   196→   196→            </Button>
+   197→   197→
+   198→   198→            <Button
+   199→   199→              asChild
+   200→   200→              variant="outline"
+   201→   201→              className="size-9 rounded-full border-ink/15 bg-card/60 p-0 text-ink transition-all hover:-translate-y-0.5 hover:border-transparent hover:bg-[#E1306C] hover:text-white"
+   202→   202→            >
+   203→   203→              <a
+   204→   204→                href={instagram.url}
+   205→   205→                target="_blank"
+   206→   206→                rel="noopener noreferrer"
+   207→   207→                aria-label="Instagram adresimiz"
+   208→   208→              >
+   209→   209→                <Instagram className="size-4" />
+   210→   210→              </a>
+   211→   211→            </Button>
+   212→   212→
+   213→   213→            <ShareButton />
+   214→   214→          </div>
+   215→   215→        </div>
+   216→   216→
+   217→   217→        {/* Okuma ilerleme çubuğu */}
+   218→   218→        <ScrollProgress />
+   219→   219→      </header>
+   220→   220→
+   221→   221→      <main className="flex-1">
+   222→   222→        {/* Yazdırma başlığı — ekranda gizli; print çıktısının tepesinde marka bandı
+   223→   223→            (yalnızca mevcut marka/adres/telefon verileriyle, yeni bilgi yok) */}
+   224→   224→        <div
+   225→   225→          aria-hidden="true"
+   226→   226→          className="hidden print:mb-7 print:block print:border-b-2 print:border-brand-red/60 print:pb-4 print:text-center"
+   227→   227→        >
+   228→   228→          <p className="font-display text-3xl tracking-wide text-brand-red">
+   229→   229→            {SITE_CONFIG.brand.upper} {SITE_CONFIG.brand.lower}
+   230→   230→          </p>
+   231→   231→          <p className="mt-1 text-xs font-semibold uppercase tracking-[0.35em] text-ink/70">
+   232→   232→            Edirne Tava Ciğer
+   233→   233→          </p>
+   234→   234→          <p className="mt-2 text-[0.7rem] text-ink/70">
+   235→   235→            {address} · {phone.display}
+   236→   236→          </p>
+   237→   237→        </div>
+   238→   238→
+   239→   239→        {/* ================= HERO ================= */}
+   240→   240→        <section
+   241→   241→          id="anasayfa"
+   242→   242→          tabIndex={-1}
+   243→   243→          className="relative overflow-hidden focus:outline-none"
+   244→   244→        >
+   245→   245→          <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 pt-8 pb-12 sm:px-6 md:pt-10 md:pb-16 lg:grid-cols-2 lg:gap-12 lg:pt-12 lg:pb-20">
+   246→   246→            <div className="order-2 lg:order-1">
+   247→   247→              <Reveal>
+   248→   248→                <h1 className="font-display text-5xl leading-[0.95] tracking-tight sm:text-6xl md:text-7xl lg:text-[5.5rem]">
+   249→   249→                  <span className="text-brand-gradient">
+   250→   250→                    {hero.titleLines[0]}
+   251→   251→                  </span>
+   252→   252→                  <br />
+   253→   253→                  <span className="text-brand-gradient">
+   254→   254→                    {hero.titleLines[1]}
+   255→   255→                  </span>
+   256→   256→                </h1>
+   257→   257→              </Reveal>
+   258→   258→
+   259→   259→              <Reveal delay={120}>
+   260→   260→                <p className="mt-6 max-w-md text-base leading-relaxed text-ink/70 sm:text-lg">
+   261→   261→                  {hero.description}{" "}
+   262→   262→                  <span className="font-semibold text-ink">
+   263→   263→                    {hero.highlight}
+   264→   264→                  </span>{" "}
+   265→   265→                  {hero.highlightSuffix}
+   266→   266→                </p>
+   267→   267→              </Reveal>
+   268→   268→
+   269→   269→              <Reveal delay={220}>
+   270→   270→                <div className="mt-8 flex flex-wrap items-center gap-3">
+   271→   271→                  <DirectionsButton />
+   272→   272→
+   273→   273→                  <Button
+   274→   274→                    asChild
+   275→   275→                    variant="outline"
+   276→   276→                    className="group h-12 rounded-full border-ink/20 bg-card/60 px-6 text-base font-semibold text-ink backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-ink hover:text-cream"
+   277→   277→                  >
+   278→   278→                    <a href="#menu">
+   279→   279→                      Menüyü Gör
+   280→   280→                      <ArrowRight className="size-4 transition-transform duration-300 motion-safe:group-hover:translate-x-1" />
+   281→   281→                    </a>
+   282→   282→                  </Button>
+   283→   283→
+   284→   284→                  <Button
+   285→   285→                    asChild
+   286→   286→                    className="h-12 rounded-full bg-[#1A73E8] px-6 text-base font-semibold text-white shadow-lg shadow-[#1A73E8]/20 transition-all hover:-translate-y-0.5 hover:bg-[#1557B0]"
+   287→   287→                  >
+   288→   288→                    <a
+   289→   289→                      href={maps.review}
+   290→   290→                      target="_blank"
+   291→   291→                      rel="noopener noreferrer"
+   292→   292→                    >
+   293→   293→                      <Star className="size-5" />
+   294→   294→                      Bize Yorum Yapın
+   295→   295→                    </a>
+   296→   296→                  </Button>
+   297→   297→                </div>
+   298→   298→              </Reveal>
+   299→   299→
+   300→   300→              <Reveal delay={300}>
+   301→   301→                <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-ink/60">
+   302→   302→                  <span className="inline-flex items-center gap-2">
+   303→   303→                    <Flame className="size-4 text-orange" />
+   304→   304→                    Yağda kızartma
+   305→   305→                  </span>
+   306→   306→                  <span className="inline-flex items-center gap-2">
+   307→   307→                    <Leaf className="size-4 text-orange" />
+   308→   308→                    Taze hazırlanır
+   309→   309→                  </span>
+   310→   310→                </div>
+   311→   311→              </Reveal>
+   312→   312→            </div>
+   313→   313→
+   314→   314→            <div className="order-1 lg:order-2">
+   315→   315→              <Reveal delay={150}>
+   316→   316→                <div className="group relative">
+   317→   317→                  {/* 160 gr damgası */}
+   318→   318→                  <div
+   319→   319→                    aria-hidden="true"
+   320→   320→                    className="absolute -right-3 -top-3 z-20 flex size-20 rotate-12 flex-col items-center justify-center rounded-full border-2 border-dashed border-cream/80 bg-gradient-to-br from-brand-red to-orange text-cream shadow-xl shadow-ink/25 transition-transform duration-500 motion-safe:group-hover:rotate-6 sm:size-24"
+   321→   321→                  >
+   322→   322→                    <span className="font-display text-2xl leading-none sm:text-3xl">
+   323→   323→                      {menu.main.gram.split(" ")[0]}
+   324→   324→                    </span>
+   325→   325→                    <span className="mt-0.5 text-[0.58rem] font-bold uppercase tracking-[0.2em]">
+   326→   326→                      {menu.main.gram.split(" ")[1] ?? "gr"}
+   327→   327→                    </span>
+   328→   328→                  </div>
+   329→   329→                  {/* Köşe çerçeve aksanları */}
+   330→   330→                  <span aria-hidden="true" className="absolute -left-2 -top-2 z-10 size-9 rounded-tl-2xl border-l-[3px] border-t-[3px] border-orange/80" />
+   331→   331→                  <span aria-hidden="true" className="absolute -right-2 -top-2 z-10 size-9 rounded-tr-2xl border-r-[3px] border-t-[3px] border-orange/80" />
+   332→   332→                  <span aria-hidden="true" className="absolute -bottom-2 -left-2 z-10 size-9 rounded-bl-2xl border-b-[3px] border-l-[3px] border-orange/80" />
+   333→   333→                  <span aria-hidden="true" className="absolute -bottom-2 -right-2 z-10 size-9 rounded-br-2xl border-b-[3px] border-r-[3px] border-orange/80" />
+   334→   334→                  <div className="absolute -inset-3 -rotate-2 rounded-[2rem] bg-gradient-to-br from-orange/20 to-brand-red/20 blur-xl transition-all duration-500 group-hover:rotate-0 group-hover:blur-2xl" />
+   335→   335→                  <div className="relative overflow-hidden rounded-[1.75rem] border-4 border-card shadow-2xl shadow-ink/20">
+   336→   336→                    <Image
+   337→   337→                      alt={hero.imageAlt}
+   338→   338→                      width={800}
+   339→   339→                      height={533}
+   340→   340→                      priority
+   341→   341→                      className="aspect-[16/10] w-full object-cover transition-transform duration-700 ease-out motion-safe:group-hover:scale-105"
+   342→   342→                      src={hero.image}
+   343→   343→                    />
+   344→   344→                    <div className="absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-ink/80 via-ink/20 to-transparent p-4 sm:p-5">
+   345→   345→                      <p className="font-display text-2xl text-cream">
+   346→   346→                        {hero.badge}
+   347→   347→                      </p>
+   348→   348→                      <div className="cy-shimmer relative overflow-hidden rounded-full bg-cream px-3 py-1 text-sm font-bold tabular-nums text-ink shadow-lg">
+   349→   349→                        {formatPrice(menu.main.price)}
+   350→   350→                      </div>
+   351→   351→                    </div>
+   352→   352→
+   353→   353→                    {/* Fotoğraf büyütme katmanı */}
+   354→   354→                    <PhotoZoom src={hero.image} alt={hero.imageAlt} />
+   355→   355→                  </div>
+   356→   356→                </div>
+   357→   357→              </Reveal>
+   358→   358→            </div>
+   359→   359→          </div>
+   360→   360→        </section>
+   361→   361→
+   362→   362→        {/* Kayan şerit */}
+   363→   363→        <MarqueeStrip />
+   364→   364→
+   365→   365→        {/* ================= MENU ================= */}
+   366→   366→        <section id="menu" className="scroll-mt-20 pt-16 pb-10 md:pt-24 md:pb-14">
+   367→   367→          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+   368→   368→            <Reveal>
+   369→   369→              <div className="mb-12 text-center">
+   370→   370→                <p className="mb-2 text-sm font-semibold uppercase tracking-[0.25em] text-orange">
+   371→   371→                  {menu.label}
+   372→   372→                </p>
+   373→   373→                <HeadingRule />
+   374→   374→              </div>
+   375→   375→            </Reveal>
+   376→   376→
+   377→   377→            {/* Ana ürün kartı */}
+   378→   378→            <Reveal delay={100}>
+   379→   379→              <div className="mb-14">
+   380→   380→                <div className="group overflow-hidden rounded-3xl border border-border/70 bg-card shadow-xl shadow-ink/5 transition-shadow duration-500 hover:shadow-2xl hover:shadow-ink/10">
+   381→   381→                  <div className="grid md:grid-cols-5">
+   382→   382→                  <div className="relative overflow-hidden md:col-span-2">
+   383→   383→                    {/* Şefin Önerisi rozeti */}
+   384→   384→                    <div className="cy-shimmer absolute left-4 top-4 z-10 flex items-center gap-1.5 overflow-hidden rounded-full bg-gradient-to-r from-brand-red to-orange px-3 py-1.5 text-[0.68rem] font-bold uppercase tracking-wider text-white shadow-lg shadow-ink/20">
+   385→   385→                      <Flame className="size-3.5" aria-hidden="true" />
+   386→   386→                      Şefin Önerisi
+   387→   387→                    </div>
+   388→   388→                    <Image
+   389→   389→                        alt={menu.main.imageAlt}
+   390→   390→                        src={menu.main.image}
+   391→   391→                        width={800}
+   392→   392→                        height={533}
+   393→   393→                        loading="lazy"
+   394→   394→                        className="h-64 w-full object-cover transition-transform duration-700 ease-out motion-safe:group-hover:scale-105 md:h-full"
+   395→   395→                      />
+   396→   396→
+   397→   397→                      {/* Fotoğraf büyütme katmanı */}
+   398→   398→                      <PhotoZoom
+   399→   399→                        src={menu.main.image}
+   400→   400→                        alt={menu.main.imageAlt}
+   401→   401→                        caption="Tabağı Gör"
+   402→   402→                      />
+   403→   403→                    </div>
+   404→   404→                    <div className="flex flex-col justify-between gap-6 p-6 sm:p-8 md:col-span-3">
+   405→   405→                      <div>
+   406→   406→                        <h3 className="font-display text-3xl leading-tight text-ink md:text-4xl">
+   407→   407→                          {menu.main.title}
+   408→   408→                        </h3>
+   409→   409→                        <p className="mt-3 max-w-lg text-ink/65">
+   410→   410→                          {menu.main.description}
+   411→   411→                        </p>
+   412→   412→                      </div>
+   413→   413→                      <div className="flex flex-wrap items-center justify-between gap-4 border-t border-border/70 pt-5">
+   414→   414→                        <div className="flex items-baseline gap-2">
+   415→   415→                          <span className="text-sm text-muted-foreground">
+   416→   416→                            {menu.main.gram}
+   417→   417→                          </span>
+   418→   418→                          <span className="font-display text-4xl tabular-nums text-brand-red">
+   419→   419→                            {formatPrice(menu.main.price)}
+   420→   420→                          </span>
+   421→   421→                        </div>
+   422→   422→                        <div className="flex flex-wrap items-center gap-3">
+   423→   423→                          <Button
+   424→   424→                            asChild
+   425→   425→                            className="h-12 rounded-full bg-gradient-to-r from-brand-red to-orange px-6 text-base font-semibold text-white shadow-lg shadow-brand-red/20 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-brand-red/30"
+   426→   426→                          >
+   427→   427→                            <a
+   428→   428→                              href={whatsappUrl}
+   429→   429→                              target="_blank"
+   430→   430→                              rel="noopener noreferrer"
+   431→   431→                            >
+   432→   432→                              <ShoppingBag className="size-4.5" />
+   433→   433→                              Sipariş Ver
+   434→   434→                            </a>
+   435→   435→                          </Button>
+   436→   436→                          <QuickAddButton
+   437→   437→                            name={menu.main.title}
+   438→   438→                            label="Siparişe Ekle"
+   439→   439→                          />
+   440→   440→                        </div>
+   441→   441→                      </div>
+   442→   442→                    </div>
+   443→   443→                  </div>
+   444→   444→                </div>
+   445→   445→              </div>
+   446→   446→            </Reveal>
+   447→   447→
+   448→   448→            {/* İçecekler */}
+   449→   449→            <Reveal>
+   450→   450→              <div className="mb-6 flex items-center gap-3">
+   451→   451→                <CupSoda className="size-5 text-orange" />
+   452→   452→                <h3 className="font-display text-2xl tracking-tight text-ink md:text-3xl">
+   453→   453→                  {menu.drinks.title}
+   454→   454→                </h3>
+   455→   455→                <div className="h-px flex-1 bg-border/70" />
+   456→   456→                <PrintMenuButton />
+   457→   457→              </div>
+   458→   458→            </Reveal>
+   459→   459→
+   460→   460→            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+   461→   461→              {menu.drinks.items.map((drink, i) => (
+   462→   462→                <Reveal key={drink.name} delay={i * 80}>
+   463→   463→                  <div className="group flex h-full items-center justify-between gap-3 rounded-2xl border border-border/70 bg-card p-4 transition-all duration-300 hover:-translate-y-1 hover:border-orange/40 hover:shadow-lg hover:shadow-ink/10 sm:p-5">
+   464→   464→                    <div className="flex min-w-0 items-center gap-3.5">
+   465→   465→                      <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-orange/10 text-orange transition-all duration-300 group-hover:rotate-6 group-hover:bg-orange group-hover:text-white">
+   466→   466→                        <DrinkIcon icon={drink.icon} />
+   467→   467→                      </span>
+   468→   468→                      <div className="min-w-0">
+   469→   469→                        <p className="truncate font-semibold leading-tight text-ink">
+   470→   470→                          {drink.name}
+   471→   471→                        </p>
+   472→   472→                        <p className="text-sm text-muted-foreground">
+   473→   473→                          {drink.volume}
+   474→   474→                        </p>
+   475→   475→                      </div>
+   476→   476→                    </div>
+   477→   477→                    <div className="flex shrink-0 items-center gap-2.5">
+   478→   478→                      <span className="font-display text-2xl tabular-nums text-brand-red transition-colors duration-300 group-hover:text-orange">
+   479→   479→                        {formatPrice(drink.price)}
+   480→   480→                      </span>
+   481→   481→                      <QuickAddButton name={drink.name} />
+   482→   482→                    </div>
+   483→   483→                  </div>
+   484→   484→                </Reveal>
+   485→   485→              ))}
+   486→   486→            </div>
+   487→   487→          </div>
+   488→   488→        </section>
+   489→   489→
+   490→   490→        {/* ================= NASIL SİPARİŞ VERİLİR ================= */}
+   491→   491→        <HowToOrder />
+   492→   492→
+   493→   493→        {/* ================= SİPARİŞ OLUŞTURUCU ================= */}
+   494→   494→        <OrderBuilder menu={menu} />
+   495→   495→
+   496→   496→        {/* Bölüm süsü */}
+   497→   497→        <SectionOrnament />
+   498→   498→
+   499→   499→        {/* ================= KONUM ================= */}
+   500→   500→        <section id="konum" className="scroll-mt-20 pt-10 pb-16 md:pt-14 md:pb-24">
+   501→   501→          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+   502→   502→            <Reveal>
+   503→   503→              <div className="mb-12 text-center">
+   504→   504→                <p className="mb-2 text-sm font-semibold uppercase tracking-[0.25em] text-orange">
+   505→   505→                  {location.label}
+   506→   506→                </p>
+   507→   507→                <h2 className="font-display text-4xl tracking-tight text-ink md:text-5xl">
+   508→   508→                  {location.title}
+   509→   509→                </h2>
+   510→   510→                <HeadingRule />
+   511→   511→              </div>
+   512→   512→            </Reveal>
+   513→   513→
+   514→   514→            <Reveal delay={120}>
+   515→   515→              <div className="grid gap-6 lg:grid-cols-2">
+   516→   516→                <div className="flex flex-col gap-6 rounded-3xl border border-border/70 bg-card p-6 shadow-xl shadow-ink/5 sm:p-8">
+   517→   517→                  {/* Adres */}
+   518→   518→                  <div className="group flex items-start gap-4">
+   519→   519→                    <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-brand-red/10 text-brand-red transition-transform duration-300 motion-safe:group-hover:scale-110">
+   520→   520→                      <MapPin className="size-5" />
+   521→   521→                    </span>
+   522→   522→                    <div className="min-w-0">
+   523→   523→                      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+   524→   524→                        Adres
+   525→   525→                      </p>
+   526→   526→                      <div className="mt-1 flex flex-wrap items-center gap-2">
+   527→   527→                        <p className="font-medium leading-relaxed text-ink">
+   528→   528→                          {address}
+   529→   529→                        </p>
+   530→   530→                        <CopyAddressButton />
+   531→   531→                      </div>
+   532→   532→                    </div>
+   533→   533→                  </div>
+   534→   534→
+   535→   535→                  {/* WhatsApp Sipariş Hattı */}
+   536→   536→                  <div className="group flex items-start gap-4">
+   537→   537→                    <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-ink/5 text-ink transition-transform duration-300 motion-safe:group-hover:scale-110">
+   538→   538→                      <Phone className="size-5" />
+   539→   539→                    </span>
+   540→   540→                    <div className="min-w-0">
+   541→   541→                      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+   542→   542→                        WhatsApp Sipariş Hattı
+   543→   543→                      </p>
+   544→   544→                      <div className="mt-1 flex flex-wrap items-center gap-2">
+   545→   545→                        <a
+   546→   546→                          href={whatsappUrl}
+   547→   547→                          target="_blank"
+   548→   548→                          rel="noopener noreferrer"
+   549→   549→                          className="font-medium text-ink underline-offset-4 hover:text-brand-red hover:underline"
+   550→   550→                        >
+   551→   551→                          {phone.display}
+   552→   552→                        </a>
+   553→   553→                        <CopyPhoneButton />
+   554→   554→                      </div>
+   555→   555→                    </div>
+   556→   556→                  </div>
+   557→   557→
+   558→   558→                  {/* Instagram */}
+   559→   559→                  <div className="group flex items-start gap-4">
+   560→   560→                    <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-[#E1306C]/10 text-[#E1306C] transition-transform duration-300 motion-safe:group-hover:scale-110">
+   561→   561→                      <Instagram className="size-5" />
+   562→   562→                    </span>
+   563→   563→                    <div>
+   564→   564→                      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+   565→   565→                        Instagram Adresimiz
+   566→   566→                      </p>
+   567→   567→                      <a
+   568→   568→                        href={instagram.url}
+   569→   569→                        target="_blank"
+   570→   570→                        rel="noopener noreferrer"
+   571→   571→                        className="mt-1 font-medium text-ink underline-offset-4 hover:text-brand-red hover:underline"
+   572→   572→                      >
+   573→   573→                        {instagram.handle}
+   574→   574→                      </a>
+   575→   575→                    </div>
+   576→   576→                  </div>
+   577→   577→
+   578→   578→                  {/* Butonlar */}
+   579→   579→                  <div className="mt-auto flex flex-col gap-3 pt-2 sm:flex-row">
+   580→   580→                    <DirectionsButton
+   581→   581→                      label="Yol Tarifi Al"
+   582→   582→                      variant="card"
+   583→   583→                    />
+   584→   584→                    <Button
+   585→   585→                      asChild
+   586→   586→                      variant="outline"
+   587→   587→                      className="h-12 flex-1 rounded-full border-ink/20 bg-transparent px-6 text-base font-semibold text-ink transition-all hover:-translate-y-0.5 hover:bg-ink hover:text-cream"
+   588→   588→                    >
+   589→   589→                      <a
+   590→   590→                        href={whatsappUrl}
+   591→   591→                        target="_blank"
+   592→   592→                        rel="noopener noreferrer"
+   593→   593→                      >
+   594→   594→                        <WhatsAppIcon className="size-5 text-[#25D366]" />
+   595→   595→                        Sipariş Ver
+   596→   596→                      </a>
+   597→   597→                    </Button>
+   598→   598→                  </div>
+   599→   599→
+   600→   600→                  <Button
+   601→   601→                    asChild
+   602→   602→                    className="h-12 w-full rounded-full bg-[#1A73E8] px-6 text-base font-semibold text-white shadow-lg shadow-[#1A73E8]/20 transition-all hover:-translate-y-0.5 hover:bg-[#1557B0]"
+   603→   603→                  >
+   604→   604→                    <a
+   605→   605→                      href={maps.review}
+   606→   606→                      target="_blank"
+   607→   607→                      rel="noopener noreferrer"
+   608→   608→                    >
+   609→   609→                      <Star className="size-5" />
+   610→   610→                      Bize Yorum Yapın
+   611→   611→                    </a>
+   612→   612→                  </Button>
+   613→   613→                </div>
+   614→   614→
+   615→   615→                {/* İnteraktif harita */}
+   616→   616→                <MapEmbed />
+   617→   617→              </div>
+   618→   618→            </Reveal>
+   619→   619→          </div>
+   620→   620→        </section>
+   621→   621→      </main>
+   622→   622→
+   623→   623→      {/* ================= FOOTER ================= */}
+   624→   624→      <footer className="relative mt-auto overflow-hidden bg-ink text-cream">
+   625→   625→        {/* Üst gradyan çizgi */}
+   626→   626→        <div
+   627→   627→          aria-hidden="true"
+   628→   628→          className="h-1 w-full bg-gradient-to-r from-brand-red via-orange to-brand-red"
+   629→   629→        />
+   630→   630→        {/* Büyük filigran */}
+   631→   631→        <span
+   632→   632→          aria-hidden="true"
+   633→   633→          className="pointer-events-none absolute -bottom-8 left-1/2 -translate-x-1/2 select-none font-display text-[24vw] leading-none text-cream/[0.045] md:text-[15rem]"
+   634→   634→        >
+   635→   635→          EDİRNE
+   636→   636→        </span>
+   637→   637→        <div className="relative mx-auto max-w-6xl px-4 py-12 sm:px-6">
+   638→   638→          <div className="grid gap-10 md:grid-cols-3">
+   639→   639→            {/* Marka — uzun basılı tutunca yönetici girişi açılır */}
+   640→   640→            <div>
+   641→   641→              <AdminTrigger items={adminItems}>
+   642→   642→                <div className="flex flex-col leading-none">
+   643→   643→                  <p className="text-[0.7rem] font-medium uppercase tracking-[0.22em] text-cream/50">
+   644→   644→                    {SITE_CONFIG.brand.upper}
+   645→   645→                  </p>
+   646→   646→                  <p className="text-sm font-semibold text-cream/90">
+   647→   647→                    {SITE_CONFIG.brand.lower}
+   648→   648→                  </p>
+   649→   649→                </div>
+   650→   650→              </AdminTrigger>
+   651→   651→              <p className="mt-4 max-w-xs text-sm leading-relaxed text-cream/60">
+   652→   652→                {SITE_CONFIG.footer.description}
+   653→   653→              </p>
+   654→   654→            </div>
+   655→   655→
+   656→   656→            {/* İletişim */}
+   657→   657→            <div>
+   658→   658→              <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-orange">
+   659→   659→                İletişim
+   660→   660→              </p>
+   661→   661→              <ul className="space-y-3 text-sm text-cream/70">
+   662→   662→                <li className="flex items-start gap-2.5">
+   663→   663→                  <MapPin className="mt-0.5 size-4 shrink-0 text-orange" />
+   664→   664→                  <span>{address}</span>
+   665→   665→                </li>
+   666→   666→                <li className="flex items-center gap-2.5">
+   667→   667→                  <Phone className="size-4 shrink-0 text-orange" />
+   668→   668→                  <a href={phone.tel} className="hover:text-cream">
+   669→   669→                    {phone.display}
+   670→   670→                  </a>
+   671→   671→                </li>
+   672→   672→                <li className="flex items-center gap-2.5">
+   673→   673→                  <Instagram className="size-4 shrink-0 text-orange" />
+   674→   674→                  <a
+   675→   675→                    href={instagram.url}
+   676→   676→                    target="_blank"
+   677→   677→                    rel="noopener noreferrer"
+   678→   678→                    className="hover:text-cream"
+   679→   679→                  >
+   680→   680→                    {instagram.handle}
+   681→   681→                  </a>
+   682→   682→                </li>
+   683→   683→              </ul>
+   684→   684→            </div>
+   685→   685→
+   686→   686→            {/* Hızlı Erişim */}
+   687→   687→            <div>
+   688→   688→              <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-orange">
+   689→   689→                Hızlı Erişim
+   690→   690→              </p>
+   691→   691→              <ul className="space-y-2.5 text-sm text-cream/70">
+   692→   692→                <li>
+   693→   693→                  <Link
+   694→   694→                    href="#menu"
+   695→   695→                    className="transition-colors hover:text-cream"
+   696→   696→                  >
+   697→   697→                    Menü
+   698→   698→                  </Link>
+   699→   699→                </li>
+   700→   700→                <li>
+   701→   701→                  <Link
+   702→   702→                    href="#konum"
+   703→   703→                    className="transition-colors hover:text-cream"
+   704→   704→                  >
+   705→   705→                    Konum &amp; Yol Tarifi
+   706→   706→                  </Link>
+   707→   707→                </li>
+   708→   708→                <li>
+   709→   709→                  <a
+   710→   710→                    href={maps.review}
+   711→   711→                    target="_blank"
+   712→   712→                    rel="noopener noreferrer"
+   713→   713→                    className="inline-flex items-center gap-1.5 transition-colors hover:text-cream"
+   714→   714→                  >
+   715→   715→                    <Star className="size-4 text-[#1A73E8]" />
+   716→   716→                    Bize Yorum Yapın
+   717→   717→                  </a>
+   718→   718→                </li>
+   719→   719→                <li>
+   720→   720→                  <a
+   721→   721→                    href={instagram.url}
+   722→   722→                    target="_blank"
+   723→   723→                    rel="noopener noreferrer"
+   724→   724→                    className="inline-flex items-center gap-1.5 transition-colors hover:text-cream"
+   725→   725→                  >
+   726→   726→                    <Instagram className="size-4 text-[#E1306C]" />
+   727→   727→                    Instagram Adresimiz
+   728→   728→                  </a>
+   729→   729→                </li>
+   730→   730→                <li>
+   731→   731→                  <a
+   732→   732→                    href={whatsappUrl}
+   733→   733→                    target="_blank"
+   734→   734→                    rel="noopener noreferrer"
+   735→   735→                    className="inline-flex items-center gap-1.5 transition-colors hover:text-cream"
+   736→   736→                  >
+   737→   737→                    <WhatsAppIcon className="size-4 text-[#25D366]" />
+   738→   738→                    WhatsApp Sipariş
+   739→   739→                  </a>
+   740→   740→                </li>
+   741→   741→              </ul>
+   742→   742→            </div>
+   743→   743→          </div>
+   744→   744→
+   745→   745→          {/* Ayraç süsü — alev ve gradyan çizgiler (marka teması) */}
+   746→   746→          <div aria-hidden="true" className="mt-10 flex items-center gap-4">
+   747→   747→            <span className="h-px flex-1 bg-gradient-to-r from-transparent via-cream/15 to-cream/15" />
+   748→   748→            <Flame className="size-3.5 text-orange/80" />
+   749→   749→            <span className="h-px flex-1 bg-gradient-to-l from-transparent via-cream/15 to-cream/15" />
+   750→   750→          </div>
+   751→   751→
+   752→   752→          <div className="mt-6 flex flex-col items-center justify-between gap-3 text-xs text-cream/50 sm:flex-row">
+   753→   753→            <p>
+   754→   754→              © {new Date().getFullYear()} {SITE_CONFIG.footer.copyright}. Tüm
+   755→   755→              hakları saklıdır.
+   756→   756→            </p>
+   757→   757→            <p>{SITE_CONFIG.footer.tagline}</p>
+   758→   758→          </div>
+   759→   759→        </div>
+   760→   760→      </footer>
+   761→   761→
+   762→   762→      {/* Mobil hızlı işlem çubuğu için alt boşluk */}
+   763→   763→      <div
+   764→   764→        className="h-0 md:hidden"
+   765→   765→        style={{ height: "calc(4.5rem + env(safe-area-inset-bottom))" }}
+   766→   766→        aria-hidden="true"
+   767→   767→      />
+   768→   768→
+   769→   769→      {/* Mobil hızlı işlem çubuğu + yukarı çık butonu */}
+   770→   770→      <MobileActionBar />
+   771→   771→      <BackToTop />
+   772→   772→    </div>
+   773→   773→  );
+   774→   774→}
+   775→   775→

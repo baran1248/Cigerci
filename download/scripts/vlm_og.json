@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "Görseli inceledim, işte kısa değerlendirmem:\n\n**1) Metin Doğruluğu & Okunaklılık:**\n*   **Doğru:** \"CIĞERCİ YUSUF\", \"EDİRNE\", \"TAVA CİĞER\", fiyat **\"420 ₺\"** ve WhatsApp numarası **\"+90 543 486 07 22\"** (görünür kısımda) doğru ve net.\n*   **Sorun:** **\"TAVA CİĞER\" kelimesi sağdan kesilmiş.** \"İ\" harfi ve noktası eksik görünüyor. Ayrıca alttaki açıklama metni (\"160 gr po...\") da yarım kalmış.\n\n**2) Türkçe Karakterler:**\n*   **Ğ, Ş, İ** harfleri (EDİRNE, TAVA CİĞER, CIĞERCİ) düzgün ve net görünmektedir.\n\n**3) Tasarım & Renk Uyumu:**\n*   **Profesyonel:** Evet, düzeni temiz ve modern. Yemek fotoğrafı için yuvarlak köşeli çerçeve (kartvizit efekti) iyi duruyor.\n*   **Renk Uyumu:** Krem arka plan, kırmızı/turuncu başlık renkleri ve yeşil buton, restoran/lezzet temasıyla çok uyumlu. Kontrast oranı yüksek, okunaklı.\n\n**4) Düzeltme Önerileri:**\n1.  **Kesik Metin:** \"TAVA CİĞER\" yazısının tamamını gösterecek şekilde font boyutunu küültün veya metni sola kaydırın. Altındaki açıklama satırını da tamamlamalısınız.\n2.  **WhatsApp Butonu:** Yeşil butonun sağındaki numaranın son iki hanesi (\"22\") kısılmış. Butonu daraltın veya metni küçültün ki telefon numarası tam çıksın.\n3.  **Fiyat Etiketi:** Fiyat etiketini (420 ₺) biraz daha sol alta veya yemek tabağının üzerine kaydırmak, boşluk dengesini iyileştirebilir.\n\n**Özet:** Harika bir tasarıma sahip, sadece **sağ taraftaki metin kesilmeleri** düzeltildiğinde yayınlanmaya hazır hale gelecektir.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1790459214,
+  "id": "2026092705462628a82ad1d20d40f2",
+  "model": "glm-5v-turbo",
+  "object": "chat.completion",
+  "request_id": "2026092705462628a82ad1d20d40f2",
+  "usage": {
+    "completion_tokens": 562,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 1218,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 1780
+  }
+}

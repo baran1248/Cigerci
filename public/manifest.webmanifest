@@ -1,0 +1,52 @@
+{
+  "name": "Edirne Tava Ciğercisi | Edirne Tava Ciğer",
+  "short_name": "Ciğercisi",
+  "description": "Edirne usulü ince kesim, yağda kızartılan yaprak ciğer. Kartal, İstanbul.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f5ecd9",
+  "theme_color": "#b8412a",
+  "lang": "tr",
+  "dir": "ltr",
+  "categories": ["food", "food & drink", "shopping"],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Menü",
+      "short_name": "Menü",
+      "url": "/#menu"
+    },
+    {
+      "name": "Konum & Yol Tarifi",
+      "short_name": "Konum",
+      "url": "/#konum"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "Bu iki görselde **ciddi bir sorun var**. İşte kontrol sonuçları:\n\n**1) Header/Footer/Butonlar:** Görseller tamamen **boş (sadece açık bej/creme arka plan)**. Ne header, ne footer, ne de herhangi bir buton görünüyor.\n\n**2) Menü Bilgisi:** **YOK.** \"Edirne Usulü Yaprak Ciğer 420 ₺\" veya içecekler listesi **hiçbir şekilde okunamıyor/görünmüyor**. Sayfalar boş çıkmış.\n\n**3) Konum/İletişim:** **YOK.** Adres, telefon veya Instagram bilgisi bulunmuyor.\n\n**4) Sorun/İsfraf:** **EVET, ciddi sorun var.** İki sayfa da **tamamen boş** çıkmış. Bu, muhtemelen:\n*   CSS'de `print` medya sorgusunda **yazı renginin arka planla aynı (veya çok açık)** olması,\n*   İçeriğin **gizlenmesi** (`display: none`),\n*   Veya **render hatası** nedeniyle oluşmuş bir durumdur.\n\n**Sonuç:** Bu çıktılar **kullanılamaz durumda**. Müşteriye boş kağıt vermek yerine, yazdırma stillerini (CSS print styles) hemen düzeltmeniz gerekiyor.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1790459346,
+  "id": "20260927054857e9190167321143db",
+  "model": "glm-5v-turbo",
+  "object": "chat.completion",
+  "request_id": "20260927054857e9190167321143db",
+  "usage": {
+    "completion_tokens": 328,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 1086,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 1414
+  }
+}

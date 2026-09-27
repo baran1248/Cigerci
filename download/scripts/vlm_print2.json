@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "Görselleri inceledim, işte kontrol sonuçlarınız:\n\n**1) Menü İçeriği:** **Evet, tam görünüyor.**\n*   **Yiyecek:** \"Edirne Usulü Yaprak Ciğer\", 160 gr, **420 ₺** ve açıklaması (1. sayfada) mevcut.\n*   **İçecekler:** Açık Ayran (50 ₺), Coca Cola (Şişe 60 ₺ / Kutu 70 ₺), Fanta (60 ₺), Damla Soda (30 ₺) ve Damla Su (20 ₺) (2. sayfada) listelenmiş.\n\n**2) Konum Bölümü:** **Evet, var.**\n*   \"BİZE ULAŞIN\" başlığı altında; **Adres** (Cırcır Caddesi...), **Telefon** (+90 543 486 07 22) ve **Instagram** (@edirnetavaciger_kartal) bilgileri eksiksiz duruyor.\n\n**3) Header/Footer/Butonlar:** **Evet, temiz görünüyor.**\n*   Sayfalarda navigasyon çubukları, kaydırma çubukları veya gereksiz butonlar yok. Sadece içerik (menü kartları ve iletişim bilgileri) baskıya uygun şekilde gösterilmiş.\n\n**4) Sayfa Düzeni:** **Düzgün.**\n*   İki sayfa da okunabilir, hizalamalar düzgün ve boşluklar dengeli. \"Sipariş Ver\" butonu bile basit bir çerçeve içinde kalmış, dağılmamış.\n\n**Sonuç:** Yazdırma çıktısı istenen tüm kritik bilgileri (menü, fiyatlar, ileşim) doğru ve düzenli bir şekilde içeriyor.",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1790459378,
+  "id": "2026092705492610c35d10ba7d4db3",
+  "model": "glm-5v-turbo",
+  "object": "chat.completion",
+  "request_id": "2026092705492610c35d10ba7d4db3",
+  "usage": {
+    "completion_tokens": 425,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 1123,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 1548
+  }
+}
