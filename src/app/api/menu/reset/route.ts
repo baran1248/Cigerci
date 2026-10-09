@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
 import { getEffectiveMenu } from "@/lib/menu-server";
+import { clearStoredMenu } from "@/lib/menu-storage";
 import { ADMIN_PASSWORD } from "@/lib/menu";
 
 export const dynamic = "force-dynamic";
@@ -29,10 +29,10 @@ export async function POST(request: Request) {
   }
 
   try {
-    await db.siteSettings.deleteMany({ where: { id: 1 } });
+    await clearStoredMenu();
   } catch {
     return NextResponse.json(
-      { ok: false, error: "Veritabanına erişilemedi. Lütfen tekrar deneyin." },
+      { ok: false, error: "Sıfırlama kaydedilemedi. Lütfen tekrar deneyin." },
       { status: 500 },
     );
   }

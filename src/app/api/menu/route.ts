@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
 import { getEffectiveMenu } from "@/lib/menu-server";
+import { writeStoredMenuJson } from "@/lib/menu-storage";
 import {
   ADMIN_PASSWORD,
   MENU_ITEM_IDS,
@@ -91,14 +91,10 @@ export async function PUT(request: Request) {
 
   const data = JSON.stringify({ items: validated });
   try {
-    await db.siteSettings.upsert({
-      where: { id: 1 },
-      update: { data },
-      create: { id: 1, data },
-    });
+    await writeStoredMenuJson(data);
   } catch {
     return NextResponse.json(
-      { ok: false, error: "Veritabanına yazılamadı. Lütfen tekrar deneyin." },
+      { ok: false, error: "Değişiklik kaydedilemedi. Lütfen tekrar deneyin." },
       { status: 500 },
     );
   }

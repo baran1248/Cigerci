@@ -1,13 +1,13 @@
-import { db } from "@/lib/db";
+import { readStoredMenuJson } from "./menu-storage";
 import { SITE_CONFIG } from "./site-config";
 import { validateName, validatePrice, type DrinkItem } from "./menu";
 
 /**
- * Sunucu tarafı: veritabanındaki yönetici düzenlemeleriyle varsayılanları
- * birleştirip SAYFANIN GERÇEKTEN KULLANDIĞI menüyü üretir.
+ * Sunucu tarafı: kalıcı depodaki (Netlify Blobs) yönetici düzenlemeleriyle
+ * varsayılanları birleştirip SAYFANIN GERÇEKTEN KULLANDIĞI menüyü üretir.
  *
  * Foolproof garanti:
- * - Veritabanı satırı yoksa / JSON bozuksa / herhangi bir alan geçersizse
+ * - Depoda kayıt yoksa / JSON bozuksa / herhangi bir alan geçersizse
  *   o alan sessizce varsayılana döner; site asla hata sayfası göstermez.
  */
 
@@ -43,10 +43,10 @@ type StoredItem = { name?: unknown; price?: unknown };
 export async function getEffectiveMenu(): Promise<EffectiveMenu> {
   const menu = defaultMenu();
   try {
-    const row = await db.siteSettings.findUnique({ where: { id: 1 } });
-    if (!row) return menu;
+    const raw = await readStoredMenuJson();
+    if (!raw) return menu;
 
-    const parsed = JSON.parse(row.data) as { items?: Record<string, StoredItem> };
+    const parsed = JSON.parse(raw) as { items?: Record<string, StoredItem> };
     const stored = parsed?.items;
     if (!stored || typeof stored !== "object") return menu;
 
@@ -74,7 +74,7 @@ export async function getEffectiveMenu(): Promise<EffectiveMenu> {
 
     return menu;
   } catch {
-    // Veritabanı erişilemiyor / veri bozuk → varsayılan menü
+    // Depo erişilemiyor / veri bozuk → varsayılan menü
     return menu;
   }
 }
