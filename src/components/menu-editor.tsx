@@ -327,7 +327,7 @@ export function MenuEditor({ open, onOpenChange, items }: MenuEditorProps) {
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="flex max-h-[90dvh] flex-col overflow-y-auto overscroll-contain rounded-3xl sm:max-w-lg">
+        <DialogContent className="flex max-h-[90dvh] flex-col rounded-3xl sm:max-w-lg">
           <DialogHeader className="shrink-0">
             <div className="mx-auto mb-1 flex size-12 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-red to-orange text-white shadow-lg shadow-brand-red/25">
               <ShieldCheck className="size-5" aria-hidden="true" />
@@ -346,7 +346,8 @@ export function MenuEditor({ open, onOpenChange, items }: MenuEditorProps) {
             yayınlanmaz. Sıfırla, tüm değerleri varsayılana döndürür.
           </p>
 
-          <div className="mt-3 flex min-h-0 flex-col gap-3">
+          {/* Ürün listesi — yalnızca bu bölüm kayar; başlık ve butonlar sabit kalır */}
+          <div className="mt-3 flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto overscroll-contain">
             <div>
               <p className="mb-1.5 text-[0.65rem] font-bold uppercase tracking-[0.2em] text-orange">
                 Ana Ürün
