@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://edirnecigercisikartal.space-z.ai"),
   title: "Edirne Tava Ciğercisi | Edirne Tava Ciğer",
   description:
-    "Edirne Tava Ciğercisi — Edirne usulü ince kesim, yağda kızartılan yaprak ciğer. Kartal İstanbul'da geleneksel tava ciğer ve içecekler. WhatsApp sipariş hattı ile sipariş verin.",
+    "Edirne Tava Ciğercisi — Edirne usulü ince kesim, yağda kızartılan yaprak ciğer. Kartal İstanbul'da geleneksel tava ciğer ve içecekler.",
   applicationName: "Edirne Tava Ciğercisi",
   authors: [{ name: "Edirne Tava Ciğercisi" }],
   keywords: [
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Edirne Tava Ciğercisi | Edirne Tava Ciğer",
     description:
-      "Edirne usulü ince kesim, yağda kızartılan yaprak ciğer. Kartal / İstanbul. WhatsApp ile sipariş: +90 543 486 07 22",
+      "Edirne usulü ince kesim, yağda kızartılan yaprak ciğer. Kartal / İstanbul. Telefon: +90 543 486 07 22",
     images: ["/og-card.jpg"],
   },
 };

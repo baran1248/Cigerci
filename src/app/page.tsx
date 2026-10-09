@@ -8,14 +8,11 @@ import {
   Instagram,
   Leaf,
   MapPin,
-  Navigation,
   Phone,
-  ShoppingBag,
   Star,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DirectionsButton } from "@/components/directions-button";
-import { WhatsAppIcon } from "@/components/whatsapp-icon";
 import { Reveal } from "@/components/reveal";
 import { MobileActionBar } from "@/components/mobile-action-bar";
 import { BackToTop } from "@/components/back-to-top";
@@ -24,21 +21,18 @@ import { ShareButton } from "@/components/share-button";
 import { ScrollProgress } from "@/components/scroll-progress";
 import { MarqueeStrip } from "@/components/marquee-strip";
 import { SectionOrnament } from "@/components/section-ornament";
-import { OrderBuilder } from "@/components/order-builder";
-import { HowToOrder } from "@/components/how-to-order";
 import { MapEmbed } from "@/components/map-embed";
 import { CopyPhoneButton } from "@/components/copy-phone-button";
 import { CopyAddressButton } from "@/components/copy-address-button";
 import { PhotoZoom } from "@/components/photo-zoom";
 import { PrintMenuButton } from "@/components/print-menu-button";
-import { QuickAddButton } from "@/components/quick-add-button";
 import { HeadingRule } from "@/components/heading-rule";
 import { AdminTrigger } from "@/components/admin-trigger";
 import { getEffectiveMenu } from "@/lib/menu-server";
 import type { EditableMenuItem } from "@/lib/menu";
 import { SITE_CONFIG, type DrinkItem } from "@/lib/site-config";
 
-const { phone, whatsappUrl, instagram, address, maps, hero, location } =
+const { phone, instagram, address, maps, hero, location } =
   SITE_CONFIG;
 
 // Menü verileri her istekte veritabanından okunur: yönetici düzenlemeleri
@@ -179,22 +173,6 @@ export default async function Home() {
           <NavLinks />
 
           <div className="flex items-center gap-2.5">
-            <Button
-              asChild
-              className="h-9 rounded-full bg-[#25D366] px-4 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#1ebe5a] hover:shadow-md"
-            >
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="WhatsApp üzerinden sipariş ver"
-              >
-                <WhatsAppIcon className="size-4" />
-                <span className="hidden sm:inline">Sipariş Ver</span>
-                <span className="sm:hidden">Sipariş</span>
-              </a>
-            </Button>
-
             <Button
               asChild
               variant="outline"
@@ -419,25 +397,6 @@ export default async function Home() {
                             {formatPrice(menu.main.price)}
                           </span>
                         </div>
-                        <div className="flex flex-wrap items-center gap-3">
-                          <Button
-                            asChild
-                            className="h-12 rounded-full bg-gradient-to-r from-brand-red to-orange px-6 text-base font-semibold text-white shadow-lg shadow-brand-red/20 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-brand-red/30"
-                          >
-                            <a
-                              href={whatsappUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <ShoppingBag className="size-4.5" />
-                              Sipariş Ver
-                            </a>
-                          </Button>
-                          <QuickAddButton
-                            name={menu.main.title}
-                            label="Siparişe Ekle"
-                          />
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -478,7 +437,6 @@ export default async function Home() {
                       <span className="font-display text-2xl tabular-nums text-brand-red transition-colors duration-300 group-hover:text-orange">
                         {formatPrice(drink.price)}
                       </span>
-                      <QuickAddButton name={drink.name} />
                     </div>
                   </div>
                 </Reveal>
@@ -486,12 +444,6 @@ export default async function Home() {
             </div>
           </div>
         </section>
-
-        {/* ================= NASIL SİPARİŞ VERİLİR ================= */}
-        <HowToOrder />
-
-        {/* ================= SİPARİŞ OLUŞTURUCU ================= */}
-        <OrderBuilder menu={menu} />
 
         {/* Bölüm süsü */}
         <SectionOrnament />
@@ -532,20 +484,18 @@ export default async function Home() {
                     </div>
                   </div>
 
-                  {/* WhatsApp Sipariş Hattı */}
+                  {/* Telefon */}
                   <div className="group flex items-start gap-4">
                     <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-ink/5 text-ink transition-transform duration-300 motion-safe:group-hover:scale-110">
                       <Phone className="size-5" />
                     </span>
                     <div className="min-w-0">
                       <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                        WhatsApp Sipariş Hattı
+                        Telefon
                       </p>
                       <div className="mt-1 flex flex-wrap items-center gap-2">
                         <a
-                          href={whatsappUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          href={phone.tel}
                           className="font-medium text-ink underline-offset-4 hover:text-brand-red hover:underline"
                         >
                           {phone.display}
@@ -581,20 +531,6 @@ export default async function Home() {
                       label="Yol Tarifi Al"
                       variant="card"
                     />
-                    <Button
-                      asChild
-                      variant="outline"
-                      className="h-12 flex-1 rounded-full border-ink/20 bg-transparent px-6 text-base font-semibold text-ink transition-all hover:-translate-y-0.5 hover:bg-ink hover:text-cream"
-                    >
-                      <a
-                        href={whatsappUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <WhatsAppIcon className="size-5 text-[#25D366]" />
-                        Sipariş Ver
-                      </a>
-                    </Button>
                   </div>
 
                   <Button
@@ -725,17 +661,6 @@ export default async function Home() {
                   >
                     <Instagram className="size-4 text-[#E1306C]" />
                     Instagram Adresimiz
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href={whatsappUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 transition-colors hover:text-cream"
-                  >
-                    <WhatsAppIcon className="size-4 text-[#25D366]" />
-                    WhatsApp Sipariş
                   </a>
                 </li>
               </ul>

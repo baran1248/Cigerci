@@ -13,7 +13,7 @@ export function ShareButton() {
   const handleShare = async () => {
     const shareData = {
       title: `${SITE_CONFIG.brand.fullName} | Edirne Tava Ciğer`,
-      text: "Edirne usulü tava ciğer — Kartal / İstanbul. WhatsApp ile sipariş verin!",
+      text: "Edirne usulü tava ciğer — Kartal / İstanbul.",
       url: typeof window !== "undefined" ? window.location.href : SITE_CONFIG.maps.directions,
     };
 

@@ -10,7 +10,7 @@ const ITEMS = [
   "Edirne Tava Ciğer",
   "160 gr Porsiyon",
   "Kartal / İstanbul",
-  "WhatsApp Sipariş",
+  "Yağda Kızartma",
   "Taze Hazırlanır",
 ];
 
