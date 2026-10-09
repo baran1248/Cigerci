@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getEffectiveMenu } from "@/lib/menu-server";
-import { clearStoredMenu } from "@/lib/menu-storage";
+import { resetStoredMenu } from "@/lib/menu-storage";
 import { ADMIN_PASSWORD } from "@/lib/menu";
 
 export const dynamic = "force-dynamic";
@@ -29,7 +29,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    await clearStoredMenu();
+    await resetStoredMenu();
   } catch {
     return NextResponse.json(
       { ok: false, error: "Sıfırlama kaydedilemedi. Lütfen tekrar deneyin." },

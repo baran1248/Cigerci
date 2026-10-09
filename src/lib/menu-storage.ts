@@ -29,7 +29,11 @@ export async function writeStoredMenuJson(data: string): Promise<void> {
   await store().set(BLOB_KEY, data);
 }
 
-/** Kayıtlı menüyü sil (varsayılana dönüş). */
-export async function clearStoredMenu(): Promise<void> {
-  await store().delete(BLOB_KEY);
+/**
+ * Menüyü varsayılana döndür: boş kayıt yazar.
+ * (Silme yerine yazma kullanılır: yazma yolunda okuma anında tutarlıdır,
+ * silme sonrası ise kısa süre eski değer okunabilir.)
+ */
+export async function resetStoredMenu(): Promise<void> {
+  await writeStoredMenuJson(JSON.stringify({ items: {} }));
 }
